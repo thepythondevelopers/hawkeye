@@ -1,0 +1,121 @@
+.checkbox{
+box-sizing: border-box;
+width: 18px;
+margin-top: 20px;
+height: 15.62px;
+border: 2px solid #505050;
+}
+label{
+margin-left:10px;
+}
+.heading_top{
+padding-left: 653.2px;
+padding-top: 20px;
+padding-bottom: 20px;
+width: 200px;
+}
+a{
+text-decoration: none;
+}
+.form_box{
+    position: absolute;
+    width: 583px;
+    height: 556px;
+    left: 531px;
+    background: #F9F9F9;
+    border-radius: 0px 22px 22px 0px;
+}
+.signup_form{
+    position: absolute;
+    margin: 120px 0px 0px 50px;
+}
+.signup_btn{
+justify-content: center;
+padding: 6px 0px 6px 0px;
+width: 111px;
+background: linear-gradient(90deg, #613DC1 0%, #858AE3 100%);
+border-radius: 5px;
+margin-top: 20px;
+font-weight: 600;
+font-size: 16px;
+line-height: 22px;
+text-transform: uppercase;
+color: #FFFFFF;
+border: 0px;
+}
+.fn{
+box-sizing: border-box;
+width: 208px;
+height: 46px;
+left: 762px;
+top: 335px;
+padding-left: 20px;
+background: #FFFFFF;
+border: 1px solid #E3E5FF;
+box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.05);
+border-radius: 5px;
+}
+.ln{
+    box-sizing: border-box;
+width: 208px;
+height: 46px;
+left: 762px;
+padding-left: 20px;
+top: 335px;
+background: #FFFFFF;
+border: 1px solid #E3E5FF;
+box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.05);
+border-radius: 5px;
+}
+.text1{
+width: 531px;
+color: #615757;
+margin-top: -50px;
+position: relative;
+text-align: center;
+}
+.login_img{
+padding: 50px;
+width: 400px;
+border-radius: 22px;
+}
+a{
+font-weight: bold;
+}
+.input{
+box-sizing: border-box;
+width: 437px;
+height: 46px;
+left: 762px;
+top: 403px;   
+padding-left: 20px;
+background: #FFFFFF;
+border: 1px solid #E3E5FF;
+box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.05);
+border-radius: 5px;
+}
+.heading1{
+    position: absolute;
+    height: 53px;
+    float: center;
+    width: 300px;
+    margin: 50px 0px 0px 50px;
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 42px;
+    color: #000000;
+}
+.copyright{
+    text-align: center;
+    margin-top: 60px;
+}
+.signup_box{
+    position: absolute;
+width: 1114px;
+height: 556px;
+left: 194.6px;
+background: #FFFFFF;
+box-shadow: 1px 2px 23px rgb(70 118 251 / 51%);
+border-radius: 22px;
+}

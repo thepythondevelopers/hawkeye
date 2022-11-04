@@ -1,0 +1,45 @@
+<!--<h1>Register</h1>
+<form #signup="ngForm" (ngSubmit)="signupdata(signup.value)">
+    <input name="name" type="text" placeholder="Enter Your Name" ngModel/>
+    <br />
+    <br />
+    <input name="email" required #email="ngModel" type="email" email placeholder="Enter Your Email" ngModel/>
+    <br />
+    <br />
+    <input name="password" required #password="ngModel" type="password" placeholder="Enter Your Password" ngModel/>
+    <br />
+    <br />
+    <button type="submit">Submit</button>
+</form>
+<br/>-->
+<div class="signup_page">
+    <img class="heading_top" src="../assets/images/Hawkeye.png" alt="Hawkeye_img">
+    <div class="signup_box">
+        <div class="form_box">
+            <h2 class="heading1">Create Account</h2>
+            <form class="signup_form" #signup="ngForm" (ngSubmit)="signupdata(signup.value)">
+            <input  class="fn" name="fname" type="text" placeholder="First Name" ngModel/>
+            <input  class="ln" style="margin-left: 20px;" name="lname" type="text" placeholder="Last Name" ngModel/>
+            <br />
+            <br />
+            <input class="input" name="email" required #email="ngModel" type="email" email placeholder="Your Email" ngModel/>
+           <br />
+           <br />
+            <input class="input" name="phno" required #email="ngModel" type="text" placeholder="Phone Number" ngModel/>
+            <br />
+            <br />
+            <input class="input" name="password" required #password="ngModel" type="password" placeholder="Password" ngModel/>
+            <br />
+            <br />
+            <input class="input" name="password" required #password="ngModel" type="password" placeholder="Confirm Password" ngModel/>
+            <br />
+            <input class="checkbox" type="checkbox" id="remember_me" name="remember_me" value="remember_me">
+            <label for="remember_me">Term And Conditions</label><br>
+            <button class="signup_btn" type="submit">Submit</button>
+            </form>
+        </div>
+        <img class="login_img" src="../assets/images/login.png" alt="login_img">
+        <div class="text1">Already have an account? Please<a href="/login"> Sign In Here</a></div>
+        <p class="copyright">2022 © All Rights Reserved. Terms of Service</p>
+    </div>
+</div>

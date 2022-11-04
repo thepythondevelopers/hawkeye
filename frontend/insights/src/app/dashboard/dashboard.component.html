@@ -1,0 +1,181 @@
+<!--<h1>Dashboard</h1>
+<button *ngIf="!loggedIn" (click)="signInWithFB()" >Login With FB</button>
+
+<div *ngIf="loggedIn">
+    <img src="{{ user.response.picture.data.url}}">
+<div>
+  <h4>{{ user.name }}</h4>
+  <p>{{ user.email }}</p>
+</div>
+</div>
+<button class="g" (click)="reach()">Reach</button>
+<button class="g" (click)="imp()">Impressions</button>
+<button class="nc" (click)="wbc()">Website Clicks</button>
+<button class="g" (click)="pv()">Profile Visits</button>
+<button class="r" (click)="np()">New posts</button>
+<button class="g" (click)="nfs()">New Followers</button>
+<button class="r">New Following</button>
+<button class="g" (click)="tf()">Total Followers</button>
+<button class="nc" (click)="lscs()">LSCS</button>
+<button class="r" (click)="tp()">Top Posts</button>
+<button class="g" (click)="fd()">Followers Details</button>
+<button class="r">Followers and non followers Reach</button>
+<button class="r" (click)="cr()">Content Reach</button>-->
+
+<div class="sidebar">
+<img class="dashboard_sidebar_icon" src="../assets/images/Vector.png" alt="dashboard_icon_img">
+<img class="dashboard_sidebar_icon2" src="../assets/images/vector2.png" alt="dashboard_icon2_img">
+<ul>
+    <li class="dashboard_text">Dashboard</li>
+    <li (click)="toggleData1()" class="text"><img class="pages_icon" src="../assets/images/pages.png" alt="pages_img"><div class="pages-and-sales-div">Pages</div><div *ngIf="!toDisplay1" class="angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay1" class="angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
+    <li (click)="toggleData()" class="text"><img class="sales_icon" src="../assets/images/sales.png" alt="sales_img"><div class="pages-and-sales-div">Sales</div><div *ngIf="!toDisplay" class="angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay" class="angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
+    <li *ngIf="toDisplay" class="text">Product List</li>
+    <li *ngIf="toDisplay" class="text">Billing</li>
+    <li *ngIf="toDisplay" class="text">Invoice</li>
+    <li class="text"><img class="inbox_icon" src="../assets/images/inbox-in.png" alt="inbox_img"><div class="mess-div">Messages</div></li>
+    <li (click)="toggleData3()" class="text"><img class="lock_icon" src="../assets/images/lock.png" alt="lock_img"><div class="auth-div">Authentication</div><div *ngIf="!toDisplay3" class="angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay3" class="angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
+    <hr />
+    <li class="text"><img class="docs_icon" src="../assets/images/clipboard-list.png" alt="docs_img"><div class="docs-div">Docs</div></li>
+    <li class="text"><img class="components_icon" src="../assets/images/collection.png" alt="components_img"><div class="comp-div">Components</div></li>
+    <li class="text"><img class="support_icon" src="../assets/images/support.png" alt="support_img"><div class="help-div">Help</div></li>
+</ul>
+</div>
+<div class="navbar">
+<img class="menu_icon" src="../assets/images/menu-alt-1.png" alt="menu_img">
+<img class="Hawkeye2_icon" src="../assets/images/Hawkeye2.png" alt="Hawkeye2_img">
+<form>
+<input type="text" placeholder="Search"/>
+<button class="search" type="submit"><img class="search_icon" src="../assets/images/search.png" alt="search_img"></button>
+</form>
+<img class="bell_wn_icon" src="../assets/images/bell_wn.png" alt="bell_wn_img">
+<img class="Avatar_icon" src="../assets/images/Avatar.png" alt="avatar_img">
+</div>
+<div class="main">
+    <h2>Dashboard</h2>
+    <div class="grid-container">
+    <div class="d1 reach">
+        <h3 class="reach_block" (click)="select_reach_period()"><span *ngIf="toDisplay_reach_period_week" class="w">W</span><span class="m" *ngIf="toDisplay_reach_period_30">M</span>Reach<div *ngIf="!toDisplay_reach_period" class="angle-down2"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_reach_period" class="angle-up2"><i class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
+        <div class="options_div" *ngIf="toDisplay_reach_period">
+        <div class="week" (click)="reach_week()" *ngIf="toDisplay_reach_period">Week</div>
+        <div class="month" (click)="reach30()" *ngIf="toDisplay_reach_period">Month</div>
+        </div>
+        <div class="count" *ngIf="toDisplay_reach_period_week">{{Reach_week}}</div>
+        <div class="count" *ngIf="toDisplay_reach_period_30">{{Reach_30}}</div>
+        <div class="small_frame_border">
+            <img class="chart-bar_icon" src="../assets/images/chart-bar.png" alt="chart-bar_img">
+            <div class="reach_percentage_change">{{reach_percentage_change}}%</div>
+        </div>
+    </div>
+    <div class="d1 Impressions">
+        <h3 class="imp_block" (click)="select_imp_period()"><span *ngIf="toDisplay_imp_period_week" class="w_i">W</span><span class="m_i" *ngIf="toDisplay_imp_period_30">M</span>Impressions<div *ngIf="!toDisplay_imp_period" class="angle-down3"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_imp_period" class="angle-up3"><i class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
+        <div class="options_div" *ngIf="toDisplay_imp_period">
+        <div class="week" (click)="imp_week()" *ngIf="toDisplay_imp_period">Week</div>
+        <div class="month" (click)="imp_30()" *ngIf="toDisplay_imp_period">Month</div>
+        </div>
+        <div class="count" *ngIf="toDisplay_imp_period_week">{{impressions_week}}</div>
+        <div class="count" *ngIf="toDisplay_imp_period_30">{{impressions_30}}</div>
+        <div class="small_frame_border">
+            <img class="chart-bar_icon" src="../assets/images/chart-bar.png" alt="chart-bar_img">
+            <div class="impressions_percentage_change">{{imp_percentage_change}}%</div>
+        </div>
+    </div>
+    <div class="d1 New_Post">
+        <h3>New Posts</h3>
+        <div class="count">300+</div>
+        <div class="small_frame_border">
+            <img class="chart-bar_icon" src="../assets/images/chart-bar.png" alt="chart-bar_img">
+            <div class="newpost_percentage_change">60%</div>
+        </div>
+    </div>
+    <div class="d1 New_following">
+        <h3>New Following</h3>
+        <div class="count">300+</div>
+        <div class="small_frame_border">
+            <img class="chart-bar_icon" src="../assets/images/chart-bar.png" alt="chart-bar_img">
+            <div class="newfollowing_percentage_change">70%</div>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="main3">
+    <div class="grid-container3">
+    <div class="d3 Website_Clicks"><h3>Website Clicks</h3>
+        <div class="lg"><canvas class="line-graph" baseChart width="600" height="450" type="line" [options]="lineChartOptions" [data]="lineChartData"></canvas></div>
+    </div>
+    <div class="d3 Profile_Visits"><h3>Profile Visits</h3>
+        <div class="lg"><canvas class="line-graph" baseChart width="600" height="450" type="line" [options]="lineChartOptions" [data]="lineChartData"></canvas></div>
+    </div>
+    </div>
+</div>
+<div class="main2">
+<div class="grid-container2">
+<div class="d2 New_Followers"><h3>New Followers</h3>
+    <div class="lg"><canvas class="line-graph" baseChart width="600" height="450" type="bar" [options]="barChartOptions" [data]="barChartData"></canvas></div>
+</div>
+<div class="d2 Followers_By_location"><h3>Followers By Location</h3>
+    <div class="doughnut-lg"><canvas class="doughnut-graph" baseChart width="600" height="450" type="doughnut"  [data]="doughnutChartData"></canvas></div>
+</div>
+<div class="d2 Followers_and_non_followers"><h3>Followers and Non Followers</h3>
+    <div class="doughnut-lg"><canvas class="doughnut-graph" baseChart width="600" height="450" type="doughnut"  [data]="doughnutChartData"></canvas></div>
+</div>
+</div>
+</div>
+<div class="main4">
+    <div class="grid-container4">
+    <div class="d4 Total_Followers"><h3>Total Followers</h3><div class="count">{{total_followers}}</div>
+    <div class="small_frame_border">
+        <img class="chart-bar_icon" src="../assets/images/chart-bar.png" alt="chart-bar_img">
+        <div class="totalfollowers_percentage_change">100%</div>
+    </div></div>
+    <div class="d4 Total_Likes"><h3>Total Likes</h3><div class="tlc count">{{total_likes}}</div>
+    <p class="TLSCS_text">Total Likes, Saves, Comments and Shares (for posts and reels for IG)<p>
+    <div class="like_sfb small_frame_border">
+        <img class="chart-bar_icon" src="../assets/images/chart-bar.png" alt="chart-bar_img">
+        <div class="tl_percentage_change">60%</div>
+    </div></div>
+    </div>
+</div>
+<div class="main5">
+    <div class="tpl_text">Top posts by likes
+        <div class="grid-container5">
+            <div class="ps">
+                <div class="thumbnail_img"></div>
+                <div class="post-title">Sample Post Title</div>
+                <div class="timestamp">Time Stamp</div>
+            </div>
+            <div class="ps">
+                <div class="thumbnail_img"></div>
+                <div class="post-title">Sample Post Title</div>
+                <div class="timestamp">Time Stamp</div>
+            </div>
+            <div class="ps">
+                <div class="thumbnail_img"></div>
+                <div class="post-title">Sample Post Title</div>
+                <div class="timestamp">Time Stamp</div>
+            </div>
+            <div class="ps">
+                <div class="thumbnail_img"></div>
+                <div class="post-title">Sample Post Title</div>
+                <div class="timestamp">Time Stamp</div>
+            </div>
+            <div class="ps">
+                <div class="thumbnail_img"></div>
+                <div class="post-title">Sample Post Title</div>
+                <div class="timestamp">Time Stamp</div>
+            </div>
+            <div class="ps">
+                <div class="thumbnail_img"></div>
+                <div class="post-title">Sample Post Title</div>
+                <div class="timestamp">Time Stamp</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main6">
+    <div class="Content_reach_text">Content Reach</div>
+    <div class="rp">
+        <div class="reels_count">Reels:</div><div class="reels_count_no">1,000</div>
+        <div class="posts_count">Posts:</div><div class="posts_count_no">200</div>
+    </div>
+</div>
+<span class="rights">2022 © All Rights Reserved. Terms of Service</span>

@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate-cert": "openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem",
+    "start": "http-server -p 4200 -o -S"
+  },
+  "dependencies": {
+    "@angular/cli": "^14.2.6"
+  }
+}

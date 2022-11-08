@@ -13,6 +13,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { FacebookLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
 import {NgChartsModule} from 'ng2-charts';
 import { LoginWithFacebookComponent } from './login-with-facebook/login-with-facebook.component';
+import { TestComponent } from './test/test.component';
+import { ProfileVisitsVisualsComponent } from './profile-visits-visuals/profile-visits-visuals.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { LoginWithFacebookComponent } from './login-with-facebook/login-with-fac
     SignupComponent,
     NotfoundComponent,
     ForgotPasswordComponent,
-    LoginWithFacebookComponent
+    LoginWithFacebookComponent,
+    TestComponent,
+    ProfileVisitsVisualsComponent,
   ],
   imports: [
     BrowserModule,

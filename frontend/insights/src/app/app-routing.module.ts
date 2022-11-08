@@ -5,11 +5,14 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LoginWithFacebookComponent } from './login-with-facebook/login-with-facebook.component';
 import { LoginComponent } from './login/login.component';
 import { NotfoundComponent } from './notfound/notfound.component';
+import { ProfileVisitsVisualsComponent } from './profile-visits-visuals/profile-visits-visuals.component';
 import { ReachComponent } from './reach/reach.component';
 import { SignupComponent } from './signup/signup.component';
+import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
   {path : 'dashboard', component : DashboardComponent},
+  {path : 'charts', component : TestComponent},
   {path : 'forgot_password', component : ForgotPasswordComponent},
   {path : 'login', component : LoginComponent},
   {path : 'signup', component : SignupComponent},

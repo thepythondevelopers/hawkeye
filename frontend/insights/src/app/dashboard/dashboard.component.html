@@ -80,11 +80,16 @@
         </div>
     </div>
     <div class="d1 New_Post">
-        <h3>New Posts</h3>
-        <div class="count">300+</div>
+        <h3 class="imp_block" (click)="select_np_period()"><span *ngIf="toDisplay_np_period_week" class="w_i">W</span><span class="m_i" *ngIf="toDisplay_np_period_30">M</span>New Posts<div *ngIf="!toDisplay_np_period" class="angle-down3"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_np_period" class="angle-up3"><i class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
+        <div class="options_div" *ngIf="toDisplay_np_period">
+        <div class="week" (click)="np_week()">Week</div>
+        <div class="month" (click)="np_30()">Month</div>
+        </div>
+        <div *ngIf="toDisplay_np_period_week" class="count">{{nps_week}}</div>
+        <div *ngIf="toDisplay_np_period_30" class="count">{{nps_30}}</div>
         <div class="small_frame_border">
-            <img class="chart-bar_icon" src="../assets/images/chart-bar.png" alt="chart-bar_img">
-            <div class="newpost_percentage_change">60%</div>
+       <div class="unit_change">Unit Change : </div>
+        <div class="newpost_percentage_change">60%</div>
         </div>
     </div>
     <div class="d1 New_following">
@@ -99,24 +104,35 @@
 </div>
 <div class="main3">
     <div class="grid-container3">
-    <div class="d3 Website_Clicks"><h3>Website Clicks</h3>
-        <div class="lg"><canvas class="line-graph" baseChart width="600" height="450" type="line" [options]="lineChartOptions" [data]="lineChartData"></canvas></div>
+    <div class="d3 Website_Clicks"><h3><span *ngIf="toDisplay_website_period_week" class="w2">W</span><span class="m2" *ngIf="toDisplay_website_period_30">M</span>Website Clicks<div  (click)="select_website_period()" *ngIf="!toDisplay_website_period" class="angle-down2"><i id="angle3" class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_website_period"  (click)="select_website_period()" class="angle-up2"><i id="angle3" class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
+    <div class="options_div_web" *ngIf="toDisplay_website_period">
+    <div class="week_wbcs" (click)="wbc_week()">Week</div>
+    <div class="month" (click)="wbc_30()">Month</div>
+    </div>    
+    <div class="total_web_clicks">{{this.wcs}}</div>
+    <div class="total_clicks_text">Total Clicks</div>
+    <div class="total_web_clicks_pc">{{wcs_percentage_change}}%</div>
+    <div class="percentage_text">Percentage Change</div>
+    <div *ngIf="toDisplay_website_period_week" class="lg"><canvas class="line-graph" baseChart width="600" height="450" [type]="lineChartType" [options]="lineChartOptions" [data]="lineChartData"></canvas></div>
+    <div *ngIf="toDisplay_website_period_30" class="lg"><canvas class="line-graph" baseChart width="600" height="450" [type]="lineChartType" [options]="lineChartOptions" [data]="lineChartDatamonth"></canvas></div>
     </div>
-    <div class="d3 Profile_Visits"><h3>Profile Visits</h3>
-        <div class="lg"><canvas class="line-graph" baseChart width="600" height="450" type="line" [options]="lineChartOptions" [data]="lineChartData"></canvas></div>
-    </div>
+    <div class="test"><app-profile-visits-visuals></app-profile-visits-visuals></div>
     </div>
 </div>
 <div class="main2">
 <div class="grid-container2">
-<div class="d2 New_Followers"><h3>New Followers</h3>
-    <div class="lg"><canvas class="line-graph" baseChart width="600" height="450" type="bar" [options]="barChartOptions" [data]="barChartData"></canvas></div>
+<div class="d2 New_Followers"><h3><span *ngIf="toDisplay_profile_period_week" class="w2">W</span><span class="m2" *ngIf="toDisplay_profile_period_30">M</span>New Followers<div (click)="select_profile_period()" *ngIf="!toDisplay_profile_period" class="angle-down2"><i id="angle3" class="fa fa-angle-down" aria-hidden="true"></i></div><div (click)="select_profile_period()" *ngIf="toDisplay_profile_period" class="angle-up2"><i id="angle3" class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
+<div class="options_div_web" *ngIf="toDisplay_profile_period">
+    <div class="week_wbcs" (click)="pv_week()">Week</div>
+    <div class="month" (click)="pv_30()">Month</div>
+    </div>      
+<div class="lg"><canvas class="line-graph" baseChart width="600" height="450" type="bar" [options]="barChartOptions" [data]="barChartData"></canvas></div>
 </div>
 <div class="d2 Followers_By_location"><h3>Followers By Location</h3>
-    <div class="doughnut-lg"><canvas class="doughnut-graph" baseChart width="600" height="450" type="doughnut"  [data]="doughnutChartData"></canvas></div>
+    <div class="doughnut-lg"><canvas class="doughnut-graph" baseChart width="600" height="450" [type]="doughnutChartType"  [data]="doughnutChartData"></canvas></div>
 </div>
 <div class="d2 Followers_and_non_followers"><h3>Followers and Non Followers</h3>
-    <div class="doughnut-lg"><canvas class="doughnut-graph" baseChart width="600" height="450" type="doughnut"  [data]="doughnutChartData"></canvas></div>
+    <div class="doughnut-lg"><canvas class="doughnut-graph" baseChart width="600" height="450" [type]="doughnutChartType"  [data]="doughnutChartData"></canvas></div>
 </div>
 </div>
 </div>

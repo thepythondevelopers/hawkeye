@@ -10,26 +10,18 @@ export class FollowersDetailsService {
 
   city(access_token:any,ig_id:any){
     let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=audience_city&period=lifetime&access_token='+access_token;
-    this.http.get(url).subscribe((res:any)=>{
-    console.log(res.data[0].values[0].value);
-    });
+    return this.http.get(url);
   }
   gender_age(access_token:any,ig_id:any){
     let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=audience_gender_age&period=lifetime&access_token='+access_token;
-    this.http.get(url).subscribe((res:any)=>{
-    console.log(res.data[0].values[0].value);
-    });
+    return this.http.get(url);
   }
   country(access_token:any,ig_id:any){
     let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=audience_country&period=lifetime&access_token='+access_token;
-    this.http.get(url).subscribe((res:any)=>{
-    console.log(res.data[0].values[0].value);
-    });
+    return this.http.get(url);
   }
   locale(access_token:any,ig_id:any){
     let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=audience_locale&period=lifetime&access_token='+access_token;
-    this.http.get(url).subscribe((res:any)=>{
-    console.log(res.data[0].values[0].value);
-    });
+    return this.http.get(url);
   }
 }

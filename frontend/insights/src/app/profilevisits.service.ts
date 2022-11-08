@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,17 +9,38 @@ import { Router } from '@angular/router';
 export class ProfilevisitsService {
 
   constructor(private http: HttpClient, private router : Router) { }
-  profile_Visits(access_token:any,ig_id:any){
-    let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=profile_views&period=day&access_token='+access_token;
-    this.http.get(url).subscribe((res)=>{
-    //console.log(Object.entries(res)[0][1][0]);
-    let len = Object.entries(res)[0][1][0]["values"].length;
-    //console.log(len);
-    var i,prv=0;
-    for(i=0;i<len;i++){
-      prv = prv + Object.entries(res)[0][1][0]["values"][i].value;
-    }
-    console.log("profile visits = ",prv);
-    });
+    pf_week(access_token:any,ig_id:any){
+    var len, i,wcs=0;
+    let now = new Date();
+    let until = Math.floor(now.getTime() / 1000);
+    let since = until-(7*24*60*60);
+    let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=profile_views&period=day&since='+since+'&until='+until+'&access_token='+access_token;
+    return this.http.get(url);
+  }
+  pf_week_p(access_token:any,ig_id:any){
+    var len, i,wcs=0;
+    let now = new Date();
+    let until = Math.floor(now.getTime() / 1000)-(7*24*60*60);
+    let since = until-(7*24*60*60);
+    let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=profile_views&period=day&since='+since+'&until='+until+'&access_token='+access_token;
+    return this.http.get(url);
+  }
+  pf_30(access_token:any,ig_id:any){
+    var len, i,wcs=0;
+    let now = new Date();
+    let until = Math.floor(now.getTime() / 1000);
+    console.log("until",until);
+    let since = until-(30*24*60*60);
+    console.log("since",since);
+    let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=profile_views&period=day&since='+since+'&until='+until+'&access_token='+access_token;
+    return this.http.get(url);
+  }
+  pf_30_p(access_token:any,ig_id:any){
+    var len, i,wcs=0;
+    let now = new Date();
+    let until = Math.floor(now.getTime() / 1000)-(30*24*60*60);
+    let since = until-(30*24*60*60);
+    let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=profile_views&period=day&since='+since+'&until='+until+'&access_token='+access_token;
+    return this.http.get(url);
   }
 }

@@ -18,6 +18,8 @@ import { ToppostService } from '../toppost.service';
 import { TotalfollowersService } from '../totalfollowers.service';
 import { WbcsService } from '../wbcs.service';
 import { BaseChartDirective } from 'ng2-charts';
+import { MediaTypeService } from '../media-type.service';
+import { TotalFollowingService } from '../total-following.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,6 +37,7 @@ export class DashboardComponent implements OnInit{
   loggedIn:any;
   access_token: any;
   ig_id: any;
+  unit_change:number=0;
   Reach_day: any;
   Reach_week: any;
   impressions_day: any;
@@ -44,6 +47,8 @@ export class DashboardComponent implements OnInit{
   total_followers: any;
   tf_inc_30: any;
   total_likes: any;
+  new_following_pcm:number=0;
+  new_following_pcw:number=0;
   toDisplay_reach_period=false;
   toDisplay_profile_period=false;
   toDisplay_website_period=false;
@@ -56,12 +61,15 @@ export class DashboardComponent implements OnInit{
   toDisplay_website_period_week= true;
   toDisplay_imp_period_week= true;
   toDisplay_imp_period= false;
+  toDisplay_newfollowing_week= true;
+  toDisplay_newfollowing_period= false;
   toDisplay_np_period_week= true;
   toDisplay_np_period= false;
   impressions_weekp: any;
   Reach_30: any;
   Reach_30p: any;
   toDisplay_imp_period_30=false;
+  toDisplay_newfollowing_month=false;
   toDisplay_np_period_30=false;
   impressions_30: any;
   impressions_30p: any;
@@ -83,6 +91,41 @@ export class DashboardComponent implements OnInit{
   date_in_string_30:Array<String>=[""];
   nps_week: any;
   nps_30: any;
+  test:String="";
+  toDisplay_toppost_options=false;
+  feed_reach: number = 0;
+  reel_reach: number = 0;
+  new_following_week: number=0;
+  new_following_month: number=0;
+  toppost_by_likes:Array<Number>=[];
+  toppost_by_comments:Array<Number>=[];
+  toppost_by_likes0:Number=0;
+  toppost_by_likes1:Number=0;
+  toppost_by_likes2:Number=0;
+  toppost_by_likes3:Number=0;
+  toppost_by_likes4:Number=0;
+  toppost_by_likes5:Number=0;
+  toppost_by_comments0:Number=0;
+  toppost_by_comments1:Number=0;
+  toppost_by_comments2:Number=0;
+  toppost_by_comments3:Number=0;
+  toppost_by_comments4:Number=0;
+  toppost_by_comments5:Number=0;
+  toppost_by_caption0:String="";
+  toppost_by_caption1:String="";
+  toppost_by_caption2:String="";
+  toppost_by_caption3:String="";
+  toppost_by_caption4:String="";
+  toppost_by_caption5:String="";
+  toppost_by_caption:Array<String>=[];
+  toDisplay_tpcaptions_likes=true;
+  toDisplay_tpcaptions_saved=false;
+  toDisplay_tpcaptions_reach=false;
+  toDisplay_tpcaptions_comments=false;
+  toDisplay_tpcount_likes=true;
+  toDisplay_tpcount_comments=false;
+  toDisplay_tpcount_reach=false;
+  toDisplay_tpcount_saved=false;
 
   toggleData() {
     this.toDisplay = !this.toDisplay;
@@ -102,8 +145,14 @@ export class DashboardComponent implements OnInit{
   select_website_period() {
     this.toDisplay_website_period = !this.toDisplay_website_period;
   }
+  select_toppost_options() {
+    this.toDisplay_toppost_options = !this.toDisplay_toppost_options;
+  }
   select_imp_period() {
     this.toDisplay_imp_period = !this.toDisplay_imp_period;
+  }
+  select_newfollowing_period() {
+    this.toDisplay_newfollowing_period = !this.toDisplay_newfollowing_period;
   }
   select_np_period() {
     this.toDisplay_np_period = !this.toDisplay_np_period;
@@ -203,9 +252,10 @@ export class DashboardComponent implements OnInit{
     ]
   };
 
-  constructor(private authService: SocialAuthService, private http: HttpClient,private router: Router,private reach_service : ContentreachService,private newpost : NewpostService,private toppost : ToppostService, private newfollowers : NewfollowersService, private wbcs : WbcsService, private dashboardservice: DashboardService, private impservice: ImpressionService, private fd_service : FollowersDetailsService, private lscs_service : LscsService,  private tfs : TotalfollowersService, private prfvisits : ProfilevisitsService ) { 
+  constructor(private total_following : TotalFollowingService, private media_type : MediaTypeService, private authService: SocialAuthService, private http: HttpClient,private router: Router,private reach_service : ContentreachService,private newpost : NewpostService,private toppost : ToppostService, private newfollowers : NewfollowersService, private wbcs : WbcsService, private dashboardservice: DashboardService, private impservice: ImpressionService, private fd_service : FollowersDetailsService, private lscs_service : LscsService,  private tfs : TotalfollowersService, private prfvisits : ProfilevisitsService ) { 
     Chart.register(...registerables);
     this.month={"0":"0"};
+    this.run();
     /*if(!localStorage.getItem("jwt")){
       this.router.navigate(['/signup']);
     }
@@ -231,7 +281,9 @@ export class DashboardComponent implements OnInit{
     this.imp_week();
     this.tf();
     this.lscs();
+    this.newfollowing_week();
     this.np_week();
+    this.tp_likes();
     this.wbc_week();
     this.pv_week();
     this.nfs_week();
@@ -268,10 +320,9 @@ export class DashboardComponent implements OnInit{
       });
   }
   run(){
-    alert("run");
-  }
-  myFunction(){
-    alert("working");
+    setInterval(() => {
+      this.t_following();
+    },86400000);
   }
   signInWithFB(): void {
     const fbLoginOptions = {
@@ -378,29 +429,182 @@ export class DashboardComponent implements OnInit{
       });
       });
   }
-  tp(){
-    this.http.get('https://graph.facebook.com/v8.0/17841437251182054/media?fields=like_count,period=month&limit=36500000&access_token=EAAJI21EvdxwBAIeJQCO9iRvGVK7AojlL7TI9JlvFzVSqDWQdWQP0fM0k2GWEmxVEHzFbS1NNkkoitZCz4TGZC8KVVWK1nwoVcmFdrcMxfuJup3ImH8AJ86FZB8vDmnNlzk4jQQaGyJK6A6pN3yq4hDSPJVFaeLUrEQ9nMK8pDxNZAZA5wRbMyjLWwAnuo5fW10rGuT3aR7UiUYoshV8Lm').subscribe((res:any)=>{
-    console.log(res);
-    let i=0;
-    for(i=0;i<res.data.length;i++){
-      this.toppost.top(res.data[i].id);
+  tp_likes(){
+    this.toDisplay_toppost_options=false;
+    this.toDisplay_tpcaptions_likes=true;
+    this.toDisplay_tpcaptions_saved=false;
+    this.toDisplay_tpcaptions_reach=false;
+    this.toDisplay_tpcaptions_comments=false;
+    this.toDisplay_tpcount_likes=true;
+    this.toDisplay_tpcount_comments=false;
+    this.toDisplay_tpcount_reach=false;
+    this.toDisplay_tpcount_saved=false;
+    this.toppost.top(this.access_token,this.ig_id).subscribe((res)=>{
+    console.log("likes=",res);
+    for(let i=0;i<Object.entries(res)[0][1].length;i++){
+      this.toppost_by_likes[i]=Object.entries(res)[0][1][i].like_count;
+      this.toppost_by_caption[i]=Object.entries(res)[0][1][i].caption;
+      console.log("caption=",this.toppost_by_caption);
     }
-    });
+    let a=0;
+    for(let j=0;j<Object.entries(res)[0][1].length;j++){
+      let a=this.toppost_by_likes[j];
+      let c=this.toppost_by_caption[j];
+      for(let i=j;i<Object.entries(res)[0][1].length;i++){
+        //console.log("post=",a);
+        if(a<this.toppost_by_likes[i]){
+          let b = a;
+          let caption=c;
+          a=this.toppost_by_likes[i];
+          c=this.toppost_by_caption[i];
+          this.toppost_by_likes[i]=b;
+          this.toppost_by_caption[i]=caption;
+        }
+      }
+      this.toppost_by_likes[j]=a;
+      this.toppost_by_caption[j]=c;
+      if(j===0){
+        this.toppost_by_likes0=a;
+        this.toppost_by_caption0=c.substring(0,30);
+        console.log("top post by like=",this.toppost_by_likes0);
+        console.log("top post by caption=",this.toppost_by_caption0);
+      }
+      if(j===1){
+        this.toppost_by_likes1=a;
+        this.toppost_by_caption1=c.substring(0,30);
+      }
+      if(j===2){
+        this.toppost_by_likes2=a;
+        this.toppost_by_caption2=c.substring(0,30);
+      }
+      if(j===3){
+        this.toppost_by_likes3=a;
+        this.toppost_by_caption3=c.substring(0,30);
+      }
+      if(j===4){
+        this.toppost_by_likes4=a;
+        this.toppost_by_caption4=c.substring(0,30);
+      }
+      if(j===5){
+        this.toppost_by_likes5=a;
+        this.toppost_by_caption5=c.substring(0,30);
+      }
+      console.log("top post=",this.toppost_by_likes);
+    }
+    })
+  }
+  tp_comments(){
+    this.toDisplay_toppost_options=false;
+    this.toDisplay_tpcaptions_likes=false;
+    this.toDisplay_tpcaptions_saved=false;
+    this.toDisplay_tpcaptions_reach=false;
+    this.toDisplay_tpcaptions_comments=true;
+    this.toDisplay_tpcount_likes=false;
+    this.toDisplay_tpcount_comments=true;
+    this.toDisplay_tpcount_reach=false;
+    this.toDisplay_tpcount_saved=false;
+    this.toppost.top(this.access_token,this.ig_id).subscribe((res)=>{
+    console.log("likes=",res);
+    for(let i=0;i<Object.entries(res)[0][1].length;i++){
+      this.toppost_by_comments[i]=Object.entries(res)[0][1][i].comments_count;
+      this.toppost_by_caption[i]=Object.entries(res)[0][1][i].caption;
+      console.log("caption=",this.toppost_by_caption);
+    }
+    let a=0;
+    for(let j=0;j<Object.entries(res)[0][1].length;j++){
+      let a=this.toppost_by_comments[j];
+      let c=this.toppost_by_caption[j];
+      for(let i=j;i<Object.entries(res)[0][1].length;i++){
+        //console.log("post=",a);
+        if(a<this.toppost_by_comments[i]){
+          let b = a;
+          let caption=c;
+          a=this.toppost_by_comments[i];
+          c=this.toppost_by_caption[i];
+          this.toppost_by_comments[i]=b;
+          this.toppost_by_caption[i]=caption;
+        }
+      }
+      this.toppost_by_comments[j]=a;
+      this.toppost_by_caption[j]=c;
+      if(j===0){
+        this.toppost_by_comments0=a;
+        this.toppost_by_caption0=c.substring(0,30);
+        console.log("top post by like=",this.toppost_by_likes0);
+        console.log("top post by caption=",this.toppost_by_comments0);
+      }
+      if(j===1){
+        this.toppost_by_comments1=a;
+        this.toppost_by_caption1=c.substring(0,30);
+      }
+      if(j===2){
+        this.toppost_by_comments2=a;
+        this.toppost_by_caption2=c.substring(0,30);
+      }
+      if(j===3){
+        this.toppost_by_comments3=a;
+        this.toppost_by_caption3=c.substring(0,30);
+      }
+      if(j===4){
+        this.toppost_by_comments4=a;
+        this.toppost_by_caption4=c.substring(0,30);
+      }
+      if(j===5){
+        this.toppost_by_comments5=a;
+        this.toppost_by_caption5=c.substring(0,30);
+      }
+      console.log("top post=",this.toppost_by_comments);
+    }
+    })
+  }
+  tp_saved(){
+    this.toDisplay_toppost_options=false;
+    this.toDisplay_tpcaptions_likes=false;
+    this.toDisplay_tpcaptions_saved=true;
+    this.toDisplay_tpcaptions_reach=false;
+    this.toDisplay_tpcaptions_comments=false;
+    this.toDisplay_tpcount_likes=false;
+    this.toDisplay_tpcount_comments=false;
+    this.toDisplay_tpcount_reach=false;
+    this.toDisplay_tpcount_saved=true;
+    alert("tp saved working");
+  }
+  tp_reach(){
+    this.toDisplay_toppost_options=false;
+    this.toDisplay_tpcaptions_likes=false;
+    this.toDisplay_tpcaptions_saved=false;
+    this.toDisplay_tpcaptions_reach=true;
+    this.toDisplay_tpcaptions_comments=false;
+    this.toDisplay_tpcount_likes=false;
+    this.toDisplay_tpcount_comments=false;
+    this.toDisplay_tpcount_reach=true;
+    this.toDisplay_tpcount_saved=false;
+    alert("tp reach working");
   }
   cr(){
-    this.reach_service.rp(this.access_token,this.ig_id).subscribe((res: any) => {
-      console.log(res.media_product_type);
-      if (res.media_product_type === "FEED") {
-        this.http.get('https://graph.facebook.com/v15.0/'+this.ig_id+'/insights?metric=reach&access_token='+this.access_token).subscribe((resp:any)=>{
-        console.log("feed reach="+resp);
+    this.lscs_service.like(this.access_token,this.ig_id).subscribe((res)=>{
+      let length=Object.entries(res)[0][1].length;
+      let ig_media_id,type_media_id;
+      console.log("length",length)
+      for(let i=0;i<length;i++){
+        ig_media_id=Object.entries(res)[0][1][i].id;
+        this.media_type.mt(this.access_token,ig_media_id).subscribe((res: any) => {
+          console.log("media_product_type",res.media_product_type);
+          type_media_id=res.id;
+          //console.log(res.media_product_type);
+          if (res.media_product_type === "FEED") {
+            this.reach_service.rp(this.access_token,type_media_id).subscribe((resp)=>{
+               this.feed_reach=this.feed_reach+Object.entries(resp)[0][1][0].values[0].value;
+            })
+          }
+          if (res.media_product_type === "REELS") {
+            this.reach_service.rp(this.access_token,type_media_id).subscribe((resp)=>{
+              this.reel_reach=this.reel_reach+Object.entries(resp)[0][1][0].values[0].value;
+            })
+          }
         });
       }
-      if (res.media_product_type === "REELS") {
-        this.http.get('https://graph.facebook.com/v15.0/'+this.ig_id+'/insights?metric=reach&access_token='+this.access_token).subscribe((resp:any)=>{
-          console.log("reels reach="+resp);
-        });
-      }
-    });
+    })
     /*api : https://graph.facebook.com/v15.0/17958979106105032/insights?metric=reach&access_token=EAAJI21EvdxwBAGdIJoWFHcOokerpZBQD2iaJB08FVys4yDi7ZCRdMJbU3It2auPrZCcjYgSmlvvurUlb6l9ZC3ZBfgB49s1OUlNo1ZC3yZCL43hVcxFgdGNmmUOdZAGhxmA1n1xaFEu5FqfXJA0xEBbQYVcty8kiA13puBdr2rCYKvDDUONHAQt9
     this.mediaid.m_id().subscribe((res:any)=>{
       this.res_id=res;
@@ -412,7 +616,7 @@ export class DashboardComponent implements OnInit{
     this.toDisplay_np_period_week=true;
     this.toDisplay_np_period_30=false;
     var dd, mm, yyyy, len, i,wcs=0;
-    let date;
+    let present_day=0,yesterday=0, date;
     this.nps_week=0;
     let now = new Date();
     let today = Math.floor(now.getTime() / 1000);
@@ -433,9 +637,16 @@ export class DashboardComponent implements OnInit{
         for(j=0;j<7;j++){
           if(this.date_in_string[j]===timestamps){
             this.nps_week++;
+            if(j===0){
+            present_day++;
+            }
+            if(j==1){
+            yesterday++;
+            }
           }
         }
       }
+      this.unit_change=(present_day-yesterday);
     });
   }
   np_30(){
@@ -443,7 +654,7 @@ export class DashboardComponent implements OnInit{
     this.toDisplay_np_period_week=false;
     this.toDisplay_np_period_30=true;
     var dd, mm, yyyy, len, i,wcs=0;
-    let date;
+    let present_day=0,yesterday=0, date;
     this.nps_30=0;
     let now = new Date();
     let today = Math.floor(now.getTime() / 1000);
@@ -464,11 +675,16 @@ export class DashboardComponent implements OnInit{
         for(j=0;j<30;j++){
           if(this.date_in_string_30[j]===timestamps){
             this.nps_30++;
+            if(j===0){
+              present_day++;
+              }
+              if(j==1){
+              yesterday++;
+              }
           }
         }
       }
-      //console.log("nps this month=",this.nps_30);
-      //console.log("this.date_in_string_30",this.date_in_string_30);
+      this.unit_change=(present_day-yesterday);
     });
   }
   tf(){
@@ -602,7 +818,18 @@ export class DashboardComponent implements OnInit{
         this.total_likes= this.total_likes + Object.entries(res)[0][1][i].like_count;
       }
       });
-    //this.lscs_service.comment(this.access_token,this.ig_id);
+      this.lscs_service.like(this.access_token,this.ig_id).subscribe((res)=>{
+        console.log(res);
+        console.log(Object.entries(res));
+        //console.log(Object.entries(res)[0][1].length);
+        let len = Object.entries(res)[0][1].length;
+        //console.log(len);
+        let i=0;
+        this.total_likes=0;
+        for(i=0;i<len;i++){
+          this.total_likes= this.total_likes + Object.entries(res)[0][1][i].like_count;
+        }
+        });
   }
   fd(){
     let i;
@@ -756,6 +983,43 @@ export class DashboardComponent implements OnInit{
       this.reach_percentage_change=<any>(((this.Reach_week-this.Reach_weekp)/this.Reach_weekp)*100).toFixed(2);
       });
     });
+    }
+    newfollowing_week(){
+      this.toDisplay_newfollowing_period=false;
+      this.toDisplay_newfollowing_week=true;
+      this.toDisplay_newfollowing_month=false;
+    }
+    newfollowing_month(){
+      this.toDisplay_newfollowing_month=true;
+      this.toDisplay_newfollowing_week=false;
+      this.toDisplay_newfollowing_period=false;
+    }
+    t_following(){
+      this.total_following.tfollowing(this.access_token,this.ig_id).subscribe((res)=>{
+      //console.log("Total following count=",Object.entries(res)[0][1]);
+      //console.log("User id=",Object.entries(res)[1][1]);
+      //let now = new Date();
+      //let date_in_unix = Math.floor(now.getTime() / 1000);
+      //console.log("todays date=",date_in_unix);
+      let req:any;
+      let request ={"id": Object.entries(res)[1][1]}
+      this.http.post('http://localhost:5000/get_following',request).subscribe((resp:any)=>{
+      console.log("following coming from database",resp)
+      this.new_following_week=resp.following_day30-resp.following_day24;
+      this.new_following_month=resp.following_day30-resp.following_day1;
+      this.new_following_pcm=(this.new_following_month/resp.following_day1)*100;
+      this.new_following_pcw=(this.new_following_week/resp.following_day24)*100;
+      if(resp.msg==='No data found'){
+        this.http.post('http://localhost:5000/save_following',{"id": Object.entries(res)[1][1], "count": Object.entries(res)[0][1]}).subscribe((response:any)=>{
+      
+      })
+      }
+      else{
+        this.http.post('http://localhost:5000/save_following',{"id": Object.entries(res)[1][1], "count": Object.entries(res)[0][1], "f1":resp.following_day1, "f2":resp.following_day2,"f3":resp.following_day3,"f4":resp.following_day4,"f5":resp.following_day5,"f6":resp.following_day6,"f7":resp.following_day7,"f8":resp.following_day8,"f9":resp.following_day9,"f10":resp.following_day10,"f11":resp.following_day11,"f12":resp.following_day12,"f13":resp.following_day13,"f14":resp.following_day14,"f15":resp.following_day15,"f16":resp.following_day16,"f17":resp.following_day17,"f18":resp.following_day18,"f19":resp.following_day19,"f20":resp.following_day20,"f21":resp.following_day21,"f22":resp.following_day22,"f23":resp.following_day23,"f24":resp.following_day24,"f25":resp.following_day25,"f26":resp.following_day26,"f27":resp.following_day27,"f28":resp.following_day28,"f29":resp.following_day29,"f30":resp.following_day30}).subscribe((response:any)=>{
+        })
+      }
+      })
+      })
     }
 }
 

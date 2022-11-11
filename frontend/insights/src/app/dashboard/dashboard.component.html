@@ -79,6 +79,20 @@
             <div class="impressions_percentage_change">{{imp_percentage_change}}%</div>
         </div>
     </div>
+    <div class="d1 New_following">
+        <h3 class="imp_block new_following_block"><span *ngIf="toDisplay_newfollowing_week" class="w_i">W</span><span class="m_i" *ngIf="toDisplay_newfollowing_month">M</span>New following<div *ngIf="!toDisplay_newfollowing_period" class="angle-down3" (click)="select_newfollowing_period()"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_newfollowing_period" class="angle-up3" (click)="select_newfollowing_period()"><i class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
+        <div class="options_div" *ngIf="toDisplay_newfollowing_period">
+        <div class="week" (click)="newfollowing_week()">Week</div>
+        <div class="month" (click)="newfollowing_month()">Month</div>
+         </div>
+        <div class="count" *ngIf="toDisplay_newfollowing_week">{{this.new_following_week}}</div>
+        <div class="count" *ngIf="toDisplay_newfollowing_month">{{this.new_following_month}}</div>
+        <div class="small_frame_border">
+            <img class="chart-bar_icon" src="../assets/images/chart-bar.png" alt="chart-bar_img">
+            <div class="newfollowing_percentage_change" *ngIf="toDisplay_newfollowing_week">{{this.new_following_pcw}}%</div>
+            <div class="newfollowing_percentage_change" *ngIf="toDisplay_newfollowing_month">{{this.new_following_pcm}}%</div>
+        </div>
+    </div>
     <div class="d1 New_Post">
         <h3 class="imp_block" (click)="select_np_period()"><span *ngIf="toDisplay_np_period_week" class="w_i">W</span><span class="m_i" *ngIf="toDisplay_np_period_30">M</span>New Posts<div *ngIf="!toDisplay_np_period" class="angle-down3"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_np_period" class="angle-up3"><i class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
         <div class="options_div" *ngIf="toDisplay_np_period">
@@ -89,19 +103,11 @@
         <div *ngIf="toDisplay_np_period_30" class="count">{{nps_30}}</div>
         <div class="small_frame_border">
        <div class="unit_change">Unit Change : </div>
-        <div class="newpost_percentage_change">60%</div>
-        </div>
-    </div>
-    <div class="d1 New_following">
-        <h3>New Following</h3>
-        <div class="count">300+</div>
-        <div class="small_frame_border">
-            <img class="chart-bar_icon" src="../assets/images/chart-bar.png" alt="chart-bar_img">
-            <div class="newfollowing_percentage_change">70%</div>
+        <div class="newpost_percentage_change">{{this.unit_change}}</div>
         </div>
     </div>
     </div>
-</div>
+    </div>
 <div class="main3">
     <div class="grid-container3">
     <div class="d3 Website_Clicks"><h3><span *ngIf="toDisplay_website_period_week" class="w2">W</span><span class="m2" *ngIf="toDisplay_website_period_30">M</span>Website Clicks<div  (click)="select_website_period()" *ngIf="!toDisplay_website_period" class="angle-down2"><i id="angle3" class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_website_period"  (click)="select_website_period()" class="angle-up2"><i id="angle3" class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
@@ -116,21 +122,13 @@
     <div *ngIf="toDisplay_website_period_week" class="lg"><canvas class="line-graph" baseChart width="600" height="450" [type]="lineChartType" [options]="lineChartOptions" [data]="lineChartData"></canvas></div>
     <div *ngIf="toDisplay_website_period_30" class="lg"><canvas class="line-graph" baseChart width="600" height="450" [type]="lineChartType" [options]="lineChartOptions" [data]="lineChartDatamonth"></canvas></div>
     </div>
-    <div class="test"><app-profile-visits-visuals></app-profile-visits-visuals></div>
+    <div class="profile-visits-visuals"><app-profile-visits-visuals></app-profile-visits-visuals></div>
     </div>
 </div>
 <div class="main2">
 <div class="grid-container2">
-<div class="d2 New_Followers"><h3><span *ngIf="toDisplay_profile_period_week" class="w2">W</span><span class="m2" *ngIf="toDisplay_profile_period_30">M</span>New Followers<div (click)="select_profile_period()" *ngIf="!toDisplay_profile_period" class="angle-down2"><i id="angle3" class="fa fa-angle-down" aria-hidden="true"></i></div><div (click)="select_profile_period()" *ngIf="toDisplay_profile_period" class="angle-up2"><i id="angle3" class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
-<div class="options_div_web" *ngIf="toDisplay_profile_period">
-    <div class="week_wbcs" (click)="pv_week()">Week</div>
-    <div class="month" (click)="pv_30()">Month</div>
-    </div>      
-<div class="lg"><canvas class="line-graph" baseChart width="600" height="450" type="bar" [options]="barChartOptions" [data]="barChartData"></canvas></div>
-</div>
-<div class="d2 Followers_By_location"><h3>Followers By Location</h3>
-    <div class="doughnut-lg"><canvas class="doughnut-graph" baseChart width="600" height="450" [type]="doughnutChartType"  [data]="doughnutChartData"></canvas></div>
-</div>
+<app-newfollwers></app-newfollwers>
+<div class="followers-details-visuals"><app-followers-details-visuals></app-followers-details-visuals></div>
 <div class="d2 Followers_and_non_followers"><h3>Followers and Non Followers</h3>
     <div class="doughnut-lg"><canvas class="doughnut-graph" baseChart width="600" height="450" [type]="doughnutChartType"  [data]="doughnutChartData"></canvas></div>
 </div>
@@ -152,37 +150,79 @@
     </div>
 </div>
 <div class="main5">
-    <div class="tpl_text">Top posts by likes
-        <div class="grid-container5">
+    <div class="tpl_text"><h3 class="tpl_text2">Top posts by <span *ngIf="toDisplay_tpcount_likes">Likes</span><span *ngIf="toDisplay_tpcount_comments">Comments</span><span *ngIf="toDisplay_tpcount_saved">Saved</span><span *ngIf="toDisplay_tpcount_reach">Reach</span><div  (click)="select_toppost_options()" *ngIf="!toDisplay_toppost_options" class="angle-down2"><i id="angle3" class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_toppost_options"  (click)="select_toppost_options()" class="angle-up2"><i id="angle3" class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
+    <div class="options_div_topposts" *ngIf="toDisplay_toppost_options">
+        <div class="week_tps" (click)="tp_likes()">likes</div>
+        <div class="month" (click)="tp_comments()">Comments</div>
+        <div class="month" (click)="tp_saved()">Saved</div>
+        <div class="month" (click)="tp_reach()">Reach</div>
+        </div>      
+    <div class="grid-container5">
             <div class="ps">
-                <div class="thumbnail_img"></div>
-                <div class="post-title">Sample Post Title</div>
-                <div class="timestamp">Time Stamp</div>
+                <div class="thumbnail_img">1</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="post-title">Caption : {{toppost_by_caption0}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="post-title">Caption : {{toppost_by_caption0}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="post-title">Caption : {{toppost_by_caption0}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-title">Caption : {{toppost_by_caption0}}...</div>
+                <div *ngIf="toDisplay_tpcount_likes" class="timestamp">Likes : {{toppost_by_likes0}}</div>
+                <div *ngIf="toDisplay_tpcount_comments" class="timestamp">Comments : {{toppost_by_likes0}}</div>
+                <div *ngIf="toDisplay_tpcount_reach" class="timestamp">Reach : {{toppost_by_likes0}}</div>
+                <div *ngIf="toDisplay_tpcount_saved" class="timestamp">Saved : {{toppost_by_likes0}}</div>
             </div>
             <div class="ps">
-                <div class="thumbnail_img"></div>
-                <div class="post-title">Sample Post Title</div>
-                <div class="timestamp">Time Stamp</div>
+                <div class="thumbnail_img">2</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="post-title">Caption : {{toppost_by_caption1}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="post-title">Caption : {{toppost_by_caption1}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="post-title">Caption : {{toppost_by_caption1}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-title">Caption : {{toppost_by_caption1}}...</div>
+                <div *ngIf="toDisplay_tpcount_likes" class="timestamp">Likes : {{toppost_by_likes1}}</div>
+                <div *ngIf="toDisplay_tpcount_comments" class="timestamp">Comments : {{toppost_by_likes1}}</div>
+                <div *ngIf="toDisplay_tpcount_reach" class="timestamp">Reach : {{toppost_by_likes1}}</div>
+                <div *ngIf="toDisplay_tpcount_saved" class="timestamp">Saved : {{toppost_by_likes1}}</div>
             </div>
             <div class="ps">
-                <div class="thumbnail_img"></div>
-                <div class="post-title">Sample Post Title</div>
-                <div class="timestamp">Time Stamp</div>
+                <div class="thumbnail_img">3</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="post-title">Caption : {{toppost_by_caption2}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="post-title">Caption : {{toppost_by_caption2}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="post-title">Caption : {{toppost_by_caption2}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-title">Caption : {{toppost_by_caption2}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="timestamp">Likes : {{toppost_by_likes2}}</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="timestamp">Comments : {{toppost_by_likes2}}</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="timestamp">Reach : {{toppost_by_likes2}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="timestamp">Saved : {{toppost_by_likes2}}</div>
             </div>
             <div class="ps">
-                <div class="thumbnail_img"></div>
-                <div class="post-title">Sample Post Title</div>
-                <div class="timestamp">Time Stamp</div>
+                <div class="thumbnail_img">4</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="post-title">Caption : {{toppost_by_caption3}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="post-title">Caption : {{toppost_by_caption3}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="post-title">Caption : {{toppost_by_caption3}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-title">Caption : {{toppost_by_caption3}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="timestamp">Likes : {{toppost_by_likes3}}</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="timestamp">Comments : {{toppost_by_likes3}}</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="timestamp">Reach : {{toppost_by_likes3}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="timestamp">Saved : {{toppost_by_likes3}}</div>
             </div>
             <div class="ps">
-                <div class="thumbnail_img"></div>
-                <div class="post-title">Sample Post Title</div>
-                <div class="timestamp">Time Stamp</div>
+                <div class="thumbnail_img">5</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="post-title">Caption : {{toppost_by_caption4}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="post-title">Caption : {{toppost_by_caption4}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="post-title">Caption : {{toppost_by_caption4}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-title">Caption : {{toppost_by_caption4}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="timestamp">Likes : {{toppost_by_likes4}}</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="timestamp">Comments : {{toppost_by_likes4}}</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="timestamp">Reach : {{toppost_by_likes4}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="timestamp">Saved : {{toppost_by_likes4}}</div>
             </div>
             <div class="ps">
-                <div class="thumbnail_img"></div>
-                <div class="post-title">Sample Post Title</div>
-                <div class="timestamp">Time Stamp</div>
+                <div class="thumbnail_img">6</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="post-title">Caption : {{toppost_by_caption5}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="post-title">Caption : {{toppost_by_caption5}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="post-title">Caption : {{toppost_by_caption5}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-title">Caption : {{toppost_by_caption5}}...</div>
+                <div *ngIf="toDisplay_tpcaptions_likes" class="timestamp">Likes : {{toppost_by_likes5}}</div>
+                <div *ngIf="toDisplay_tpcaptions_comments" class="timestamp">Comments : {{toppost_by_likes5}}</div>
+                <div *ngIf="toDisplay_tpcaptions_reach" class="timestamp">Reach : {{toppost_by_likes5}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="timestamp">Saved : {{toppost_by_likes5}}</div>
             </div>
         </div>
     </div>
@@ -190,8 +230,8 @@
 <div class="main6">
     <div class="Content_reach_text">Content Reach</div>
     <div class="rp">
-        <div class="reels_count">Reels:</div><div class="reels_count_no">1,000</div>
-        <div class="posts_count">Posts:</div><div class="posts_count_no">200</div>
+        <div class="reels_count">Reels:</div><div class="reels_count_no">{{reel_reach}}</div>
+        <div class="posts_count">Posts:</div><div class="posts_count_no">{{feed_reach}}</div>
     </div>
 </div>
 <span class="rights">2022 © All Rights Reserved. Terms of Service</span>

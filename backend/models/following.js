@@ -1,0 +1,36 @@
+const mongoose = require('mongoose');
+
+let followingSchema =  new mongoose.Schema({
+    user_id:String,
+    following_day1:Number,
+    following_day2:Number,
+    following_day3:Number,
+    following_day4:Number,
+    following_day5:Number,
+    following_day6:Number,
+    following_day7:Number,
+    following_day8:Number,
+    following_day9:Number,
+    following_day10:Number,
+    following_day11:Number,
+    following_day12:Number,
+    following_day13:Number,
+    following_day14:Number,
+    following_day15:Number,
+    following_day16:Number,
+    following_day17:Number,
+    following_day18:Number,
+    following_day19:Number,
+    following_day20:Number,
+    following_day21:Number,
+    following_day22:Number,
+    following_day23:Number,
+    following_day24:Number,
+    following_day25:Number,
+    following_day26:Number,
+    following_day27:Number,
+    following_day28:Number,
+    following_day29:Number,
+    following_day30:Number
+})
+module.exports=mongoose.model('following',followingSchema)

@@ -30,7 +30,9 @@ export class LscsService {
     )*/
   }
   like(access_token:any,ig_id:any){
-    let tl_url='https://graph.facebook.com/v8.0/'+ig_id+'/media?fields=like_count&limit=36500000&access_token='+access_token;
+    let now = new Date();
+    let limit = Math.floor(now.getTime() / 1000);
+    let tl_url='https://graph.facebook.com/v8.0/'+ig_id+'/media?fields=like_count&limit='+limit+'&access_token='+access_token;
     return this.http.get(tl_url);
   }
   comment(access_token:any,ig_id:any){

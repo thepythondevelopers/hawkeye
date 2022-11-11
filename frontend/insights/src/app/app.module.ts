@@ -15,6 +15,8 @@ import {NgChartsModule} from 'ng2-charts';
 import { LoginWithFacebookComponent } from './login-with-facebook/login-with-facebook.component';
 import { TestComponent } from './test/test.component';
 import { ProfileVisitsVisualsComponent } from './profile-visits-visuals/profile-visits-visuals.component';
+import { FollowersDetailsVisualsComponent } from './followers-details-visuals/followers-details-visuals.component';
+import { NewfollwersComponent } from './newfollwers/newfollwers.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { ProfileVisitsVisualsComponent } from './profile-visits-visuals/profile-
     LoginWithFacebookComponent,
     TestComponent,
     ProfileVisitsVisualsComponent,
+    FollowersDetailsVisualsComponent,
+    NewfollwersComponent,
   ],
   imports: [
     BrowserModule,

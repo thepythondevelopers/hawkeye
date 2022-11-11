@@ -9,6 +9,7 @@ export class SignupService {
 
   constructor(private http : HttpClient, private router: Router) { }
   signup(req:any){
+    console.log('request from signup',req);
     this.http.post('http://localhost:5000/register',(req)).subscribe((res:any)=>{
       alert(res.msg);
       if(res.msg==="registration successfull"){

@@ -1,9 +1,11 @@
 import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { FollowersDetailsVisualsComponent } from './followers-details-visuals/followers-details-visuals.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginWithFacebookComponent } from './login-with-facebook/login-with-facebook.component';
 import { LoginComponent } from './login/login.component';
+import { NewfollwersComponent } from './newfollwers/newfollwers.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { ProfileVisitsVisualsComponent } from './profile-visits-visuals/profile-visits-visuals.component';
 import { ReachComponent } from './reach/reach.component';
@@ -13,6 +15,7 @@ import { TestComponent } from './test/test.component';
 const routes: Routes = [
   {path : 'dashboard', component : DashboardComponent},
   {path : 'charts', component : TestComponent},
+  {path : 'dashboard/newfollowers-visuals', component : NewfollwersComponent},
   {path : 'forgot_password', component : ForgotPasswordComponent},
   {path : 'login', component : LoginComponent},
   {path : 'signup', component : SignupComponent},

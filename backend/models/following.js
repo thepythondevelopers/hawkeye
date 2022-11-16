@@ -31,6 +31,8 @@ let followingSchema =  new mongoose.Schema({
     following_day27:Number,
     following_day28:Number,
     following_day29:Number,
-    following_day30:Number
+    following_day30:Number,
+    total_following:Number,
+    following_previous_month:Number
 })
 module.exports=mongoose.model('following',followingSchema)

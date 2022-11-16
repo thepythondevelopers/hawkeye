@@ -3,6 +3,7 @@ import { Chart, ChartConfiguration, ChartEvent, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { ProfilevisitsService } from '../profilevisits.service';
 import { WbcsService } from '../wbcs.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class ProfileVisitsVisualsComponent implements OnInit {
   wcs_p: any;
   wcs_percentage_change: any;
 
-  constructor(private prfvisits : ProfilevisitsService,private wbcs : WbcsService) {
+  constructor(private prfvisits : ProfilevisitsService,private wbcs : WbcsService,private router: Router) {
     this.access_token=localStorage.getItem("access_token");
     this.ig_id=localStorage.getItem("ig_id");
     this.pv_week();
@@ -80,7 +81,9 @@ export class ProfileVisitsVisualsComponent implements OnInit {
   select_profile_period() {
     this.toDisplay_profile_period = !this.toDisplay_profile_period;
   }
-
+  pv_calender(){
+    this.router.navigate(['profile-visits/calender']);
+  }
   pv_week(){
     this.toDisplay_profile_period=false;
     this.toDisplay_profile_period_30=false;

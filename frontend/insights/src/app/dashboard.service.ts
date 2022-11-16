@@ -46,4 +46,68 @@ export class DashboardService {
     //let url_day_28='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=reach&period=days_28&access_token='+access_token;
     return this.http.get(url_30);
   }
+  reach_calender(access_token:any,ig_id:any,date:any,period:any){
+    var len, i,wcs=0;
+    let until = new Date(date).getTime() / 1000;
+    let since=0;
+    if(period==="month"){
+      since = until-(30*24*60*60);
+    }
+    else if(period==="week"){
+      since = until-(7*24*60*60);
+    }
+    let url_week='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=reach&period=day&since='+since+'&until='+until+'&access_token='+access_token;
+    //let url_day_28='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=reach&period=days_28&access_token='+access_token;
+    return this.http.get(url_week);
+  }
+  reach_calender_p(access_token:any,ig_id:any,date:any,period:any){
+    var len, i,wcs=0;
+    let since=0;
+    let until=0;
+    if(period==="month"){
+      until = (new Date(date).getTime() / 1000)-(30*24*60*60);
+      since = until-(30*24*60*60);
+      console.log("for month=","start date=",since,"end date=",until);
+    }
+    else if(period==="week"){
+      until = (new Date(date).getTime() / 1000)-(7*24*60*60);
+      since = until-(7*24*60*60);
+      console.log("for week=","start date=",since,"end date=",until);
+    }
+    let url_week='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=reach&period=day&since='+since+'&until='+until+'&access_token='+access_token;
+    //let url_day_28='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=reach&period=days_28&access_token='+access_token;
+    return this.http.get(url_week);
+  }
+  imp_calender(access_token:any,ig_id:any,date:any,period:any){
+    var len, i,wcs=0;
+    let until = new Date(date).getTime() / 1000;
+    let since=0;
+    if(period==="month"){
+      since = until-(30*24*60*60);
+    }
+    else if(period==="week"){
+      since = until-(7*24*60*60);
+    }
+    let url_week='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=impressions&period=day&since='+since+'&until='+until+'&access_token='+access_token;
+    //let url_day_28='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=reach&period=days_28&access_token='+access_token;
+    return this.http.get(url_week);
+  }
+  imp_calender_p(access_token:any,ig_id:any,date:any,period:any){
+    var len, i,wcs=0;
+    let since=0;
+    let until=0;
+    if(period==="month"){
+      until = (new Date(date).getTime() / 1000)-(30*24*60*60);
+      since = until-(30*24*60*60);
+      console.log("for month=","start date=",since,"end date=",until);
+    }
+    else if(period==="week"){
+      until = (new Date(date).getTime() / 1000)-(7*24*60*60);
+      since = until-(7*24*60*60);
+      console.log("for week=","start date=",since,"end date=",until);
+    }
+    let url_week='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=impressions&period=day&since='+since+'&until='+until+'&access_token='+access_token;
+    //let url_day_28='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=reach&period=days_28&access_token='+access_token;
+    return this.http.get(url_week);
+  }
 }

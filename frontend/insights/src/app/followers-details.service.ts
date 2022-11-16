@@ -20,8 +20,4 @@ export class FollowersDetailsService {
     let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=audience_country&period=lifetime&access_token='+access_token;
     return this.http.get(url);
   }
-  locale(access_token:any,ig_id:any){
-    let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=audience_locale&period=lifetime&access_token='+access_token;
-    return this.http.get(url);
-  }
 }

@@ -43,4 +43,36 @@ export class ProfilevisitsService {
     let url='https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=profile_views&period=day&since='+since+'&until='+until+'&access_token='+access_token;
     return this.http.get(url);
   }
+  pv_calender(access_token:any,ig_id:any,date:any,period:any){
+    var len, i,wcs=0;
+    let since=0;
+    let until=0;
+    if(period==="month"){
+      until = Math.floor(new Date(date).getTime() / 1000);
+      since = until-(30*24*60*60);
+      console.log("for month=","start date=",since,"end date=",until);
+    }
+    else if(period==="week"){
+      until = Math.floor(new Date(date).getTime() / 1000);
+      since = until-(7*24*60*60);
+      console.log("for week=","start date=",since,"end date=",until);
+    }
+    return this.http.get('https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=profile_views&period=day&since='+since+'&until='+until+'&access_token='+access_token);
+  }
+  pv_calender_p(access_token:any,ig_id:any,date:any,period:any){
+    var len, i,wcs=0;
+    let since=0;
+    let until=0;
+    if(period==="month"){
+      until = Math.floor(new Date(date).getTime() / 1000)-(30*24*60*60);
+      since = until-(30*24*60*60);
+      console.log("for month=","start date=",since,"end date=",until);
+    }
+    else if(period==="week"){
+      until = Math.floor(new Date(date).getTime() / 1000)-(7*24*60*60);
+      since = until-(7*24*60*60);
+      console.log("for week=","start date=",since,"end date=",until);
+    }
+    return this.http.get('https://graph.facebook.com/v15.0/'+ig_id+'/insights?metric=profile_views&period=day&since='+since+'&until='+until+'&access_token='+access_token);
+  }
 }

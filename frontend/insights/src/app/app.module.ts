@@ -17,6 +17,12 @@ import { TestComponent } from './test/test.component';
 import { ProfileVisitsVisualsComponent } from './profile-visits-visuals/profile-visits-visuals.component';
 import { FollowersDetailsVisualsComponent } from './followers-details-visuals/followers-details-visuals.component';
 import { NewfollwersComponent } from './newfollwers/newfollwers.component';
+import { FollowerDetailsInsightsComponent } from './follower-details-insights/follower-details-insights.component';
+import { ReachCalenderComponent } from './reach-calender/reach-calender.component';
+import { ImpressionCalenderComponent } from './impression-calender/impression-calender.component';
+import { NewpostCalenderComponent } from './newpost-calender/newpost-calender.component';
+import { WebsiteClicksInsightsComponent } from './website-clicks-insights/website-clicks-insights.component';
+import { ProfileVisitsCalenderComponent } from './profile-visits-calender/profile-visits-calender.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +38,12 @@ import { NewfollwersComponent } from './newfollwers/newfollwers.component';
     ProfileVisitsVisualsComponent,
     FollowersDetailsVisualsComponent,
     NewfollwersComponent,
+    FollowerDetailsInsightsComponent,
+    ReachCalenderComponent,
+    ImpressionCalenderComponent,
+    NewpostCalenderComponent,
+    WebsiteClicksInsightsComponent,
+    ProfileVisitsCalenderComponent,
   ],
   imports: [
     BrowserModule,

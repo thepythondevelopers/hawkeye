@@ -10,7 +10,10 @@ import { LoginService } from '../login.service';
 export class LoginComponent implements OnInit {
   
   constructor(private router : Router, private login : LoginService) {
-    if(localStorage.getItem("jwt")){
+    /*if(localStorage.getItem("jwt")){
+      this.router.navigate(['/login-with-facebook']);
+    }*/
+    if(localStorage.getItem("email")){
       this.router.navigate(['/login-with-facebook']);
     }
    }

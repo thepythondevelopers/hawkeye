@@ -1,7 +1,8 @@
 <div class="d3 Website_Clicks"><h3><span *ngIf="toDisplay_profile_period_week" class="w2">W</span><span class="m2" *ngIf="toDisplay_profile_period_30">M</span>Profile Visits<div  (click)="select_profile_period()" *ngIf="!toDisplay_profile_period" class="angle-down2"><i id="angle3" class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_profile_period"  (click)="select_profile_period()" class="angle-up2"><i id="angle3" class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
 <div class="options_div_web" *ngIf="toDisplay_profile_period">
 <div class="week_wbcs" (click)="pv_week()">Week</div>
-<div class="month" (click)="pv_30()">Month</div>
+<div class="month_wbcs" (click)="pv_30()">Month</div>
+<div class="month" (click)="pv_calender()">Calender</div>
 </div>
 <div class="total_web_clicks">{{this.wcs}}</div>
 <div class="total_clicks_text">Total Visits</div>

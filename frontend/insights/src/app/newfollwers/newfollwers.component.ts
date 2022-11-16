@@ -79,7 +79,7 @@ export class NewfollwersComponent implements OnInit {
     let i=0,time="",date="",month="";
     this.newfollowers.nf_week(this.access_token,this.ig_id).subscribe((res)=>{
       console.log("new followers this week=",res);
-      for(let i=0;i<7;i++){
+      for(let i=0;i<Object.entries(res)[0][1][0].values.length;i++){
         this.newfollowers_c=this.newfollowers_c+Object.entries(res)[0][1][0].values[i].value;
         if (this.barChartData.datasets) {
           this.barChartData.datasets[0].data[i] = Object.entries(res)[0][1][0].values[i].value;
@@ -97,7 +97,7 @@ export class NewfollwersComponent implements OnInit {
       //console.log(this.data_array_w);
       if (this.barChartData.labels) {
       //this.lineChartData.labels = [];
-      for(j=0;j<7;j++){
+      for(j=0;j<Object.entries(res)[0][1][0].values.length;j++){
         this.barChartData.labels[j] = <string>Object.entries(this.data_array_w[j][1])[0][1];
       }
       console.log("this.barChartData.labels[j]",this.barChartData.labels);
@@ -105,7 +105,7 @@ export class NewfollwersComponent implements OnInit {
         this.chart?.update();
       this.newfollowers.nf_week_p(this.access_token,this.ig_id).subscribe((resp)=>{
         console.log("new followers previous week=",resp);
-      for(let i=0;i<7;i++){
+      for(let i=0;i<Object.entries(resp)[0][1][0].values.length;i++){
         this.newfollowers_p=this.newfollowers_p+Object.entries(resp)[0][1][0].values[i].value;
        }
        this.newfollowers_pc=((this.newfollowers_c-this.newfollowers_p)/this.newfollowers_p)*100;
@@ -120,9 +120,8 @@ export class NewfollwersComponent implements OnInit {
       this.newfollowers_p=0;
       let i=0,time="",date="",month="";
       this.newfollowers.nf_30(this.access_token,this.ig_id).subscribe((res)=>{
-        console.log("new followers this month=",res);
-        for(let i=0;i<30;i++){
-          this.newfollowers_c=this.newfollowers_c+Object.entries(res)[0][1][0].values[i].value;
+        console.log("new followers this month=",Object.entries(res)[0][1][0].values);
+        for(let i=0;i<Object.entries(res)[0][1][0].values.length;i++){
           this.newfollowers_c=this.newfollowers_c+Object.entries(res)[0][1][0].values[i].value;
         if (this.barChartData.datasets) {
           this.barChartDatamonth.datasets[0].data[i] = Object.entries(res)[0][1][0].values[i].value;
@@ -139,7 +138,7 @@ export class NewfollwersComponent implements OnInit {
         //console.log(this.data_array_w);
         if (this.barChartData.labels) {
         //this.lineChartData.labels = [];
-        for(j=0;j<30;j++){
+        for(j=0;j<Object.entries(res)[0][1][0].values.length;j++){
           this.barChartDatamonth.labels[j] = <string>Object.entries(this.data_array_w[j][1])[0][1];
         }
         console.log("this.barChartDatamonth.labels[j]",this.barChartDatamonth.labels);
@@ -147,7 +146,7 @@ export class NewfollwersComponent implements OnInit {
           this.chart?.update();
       this.newfollowers.nf_30_p(this.access_token,this.ig_id).subscribe((resp)=>{
         console.log("new followers previous month=",resp);
-        for(let i=0;i<30;i++){
+        for(let i=0;i<Object.entries(res)[0][1][0].values.length;i++){
          this.newfollowers_p=this.newfollowers_p+Object.entries(resp)[0][1][0].values[i].value;
         }
       });

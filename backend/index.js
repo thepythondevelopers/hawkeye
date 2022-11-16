@@ -7,9 +7,6 @@ const mongoose = require('mongoose');
 const User = require('./models/users');
 const Following = require('./models/following');
 var bodyParser = require('body-parser');
-var crypto = require('crypto');
-var key = "password";
-var algo = "aes256";
 const jwt = require('jsonwebtoken');
 const { rmSync } = require('fs');
 const jwtKey = "jwt";
@@ -25,10 +22,8 @@ app.get('/', async (req, res) => {
 })
 app.post('/login', jsonParser, function (req, res) {
     User.findOne({ email: req.body.email }).then((data) => {
-        console.log("data",data)
-        var decipher = crypto.createDecipher(algo, key);
-        var decrypted = decipher.update(data.password, 'hex', 'utf8') + decipher.final('utf8');
-        if (decrypted === req.body.password) {
+        console.log("data",data.password)
+        if (data.password === req.body.password) {
             jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
                 await User.updateOne({email: req.body.email},{
                     $set:{
@@ -41,20 +36,15 @@ app.post('/login', jsonParser, function (req, res) {
         else{
             res.status(400).send({"msg":"EmailID and Password Does'nt Match"});
         }
-        console.log(decrypted);
     })
 })
 app.post('/register', jsonParser, function (req, res) {
-    var cipher = crypto.createCipher(algo, key);
-    var encrypted = cipher.update(req.body.password, 'utf8', 'hex')
-        + cipher.final('hex');
-    console.log(encrypted);
     const data = new User({
         _id: mongoose.Types.ObjectId(),
         fname: req.body.fname,
         lname: req.body.lname,
         email: req.body.email,
-        password: encrypted,
+        password: req.body.password,
         token:"0"
     })
     data.save().then((result) => {
@@ -112,7 +102,9 @@ app.post('/save_following', jsonParser,async (req,res)=>{
                 following_day27:0,
                 following_day28:0,
                 following_day29:0,
-                following_day30:req.body.count
+                following_day30:req.body.f_change,
+                total_following:req.body.total,
+                following_previous_month:0
             })
             data.save().then((result) => {
             console.log("result",result);
@@ -268,13 +260,36 @@ app.post('/save_following', jsonParser,async (req,res)=>{
             })
             await Following.updateOne({user_id: req.body.id},{
                 $set:{
-                following_day30:req.body.count,
+                following_day30:req.body.f_change,
+                }
+            })
+            await Following.updateOne({user_id: req.body.id},{
+                $set:{
+                total_following:req.body.total,
                 }
             })
             
         data.save().then((result) => {
             console.log("result",result);
             res.status(201).send({"msg":"Folling updated Successfully"});
+            }).catch((err) => console.log(err));
+        }
+    })
+})
+app.post('/save_following_month_p', jsonParser,async (req,res)=>{
+    console.log("id",req.body.id);
+    Following.findOne({ user_id: req.body.id }).then(async (data) => {
+        console.log("data",data);
+        if(data){
+            console.log("req body",req.body)
+            await Following.updateOne({user_id: req.body.id},{
+                $set:{
+                following_previous_month:req.body.following_previous_month,
+                }
+            })
+        data.save().then((result) => {
+            console.log("result",result);
+            res.status(201).send({"msg":"Following previous month updated Successfully"});
             }).catch((err) => console.log(err));
         }
     })

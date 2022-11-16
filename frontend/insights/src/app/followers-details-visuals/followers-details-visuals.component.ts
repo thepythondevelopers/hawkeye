@@ -4,6 +4,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { FollowersDetailsService } from '../followers-details.service';
 import { ProfilevisitsService } from '../profilevisits.service';
 import { WbcsService } from '../wbcs.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-followers-details-visuals',
@@ -22,13 +23,12 @@ export class FollowersDetailsVisualsComponent implements OnInit {
   wcs_p: any;
   wcs_percentage_change: any;
   toDisplay_country = false;
-  toDisplay_locale = false;
   toDisplay_gender = false;
   toDisplay_age = false;
   toDisplay_city = true;
   toDisplay_details = false;
 
-  constructor(private prfvisits: ProfilevisitsService, private wbcs: WbcsService, private fd_service: FollowersDetailsService) {
+  constructor(private router : Router,private prfvisits: ProfilevisitsService, private wbcs: WbcsService, private fd_service: FollowersDetailsService) {
     this.access_token = localStorage.getItem("access_token");
     this.ig_id = localStorage.getItem("ig_id");
     this.fd_city();
@@ -43,7 +43,7 @@ export class FollowersDetailsVisualsComponent implements OnInit {
         data: [],
         label: 'Visits',
         backgroundColor: [
-          '#3B00ED','#9C27B0','#D81B60','#FF9800','#C0CA33'
+          '#3B00ED','#9C27B0','#D81B60','#FF9800','#C0CA33','#B2BEB5'
         ]
       }
     ],
@@ -64,22 +64,30 @@ export class FollowersDetailsVisualsComponent implements OnInit {
   fd_city() {
     this.toDisplay_details = false;
     this.toDisplay_country = false;
-    this.toDisplay_locale = false;
     this.toDisplay_gender = false;
     this.toDisplay_age = false;
     this.toDisplay_city = true;
     let i;
     this.fd_service.city(this.access_token, this.ig_id).subscribe((res: any) => {
+      let obj=res.data[0].values[0].value;
+      let length=Object.keys(obj).length;
       let fieldValues = res.data[0].values[0].value;
       let filedlabels = Object.keys(res.data[0].values[0].value);
       let keys = Object.keys(res.data[0].values[0].value);
       this.doughnutChartData.labels = [];
-      for (i = 0; i < 5; i++) {
+      for (i = 0; i < length; i++) {
         console.log("city", Object.keys(res.data[0].values[0].value)[i]);
         console.log("city values", keys.map(k => fieldValues[k])[i]);
         if (this.doughnutChartData.datasets) {
-          this.doughnutChartData.datasets[0].data[i] = keys.map(k => fieldValues[k])[i];
-          this.doughnutChartData.labels[i] = [Object.keys(res.data[0].values[0].value)[i]];
+          if(i<5){
+            this.doughnutChartData.datasets[0].data[i] = keys.map(k => fieldValues[k])[i];
+            this.doughnutChartData.labels[i] = [Object.keys(res.data[0].values[0].value)[i]];
+            this.doughnutChartData.datasets[0].data[5]=0;
+          }
+          else{
+            this.doughnutChartData.datasets[0].data[5] =this.doughnutChartData.datasets[0].data[5] + keys.map(k => fieldValues[k])[i];
+            this.doughnutChartData.labels[5] = "others";
+          }
         }
       }
       this.chart?.update();
@@ -88,22 +96,30 @@ export class FollowersDetailsVisualsComponent implements OnInit {
   fd_country() {
     this.toDisplay_details = false;
     this.toDisplay_country = true;
-    this.toDisplay_locale = false;
     this.toDisplay_gender = false;
     this.toDisplay_age = false;
     this.toDisplay_city = false;
     let i;
     this.fd_service.country(this.access_token, this.ig_id).subscribe((res: any) => {
+      let obj=res.data[0].values[0].value;
+      let length=Object.keys(obj).length;
       let fieldValues = res.data[0].values[0].value;
       let filedlabels = Object.keys(res.data[0].values[0].value);
       let keys = Object.keys(res.data[0].values[0].value);
       this.doughnutChartData.labels = [];
-      for (i = 0; i < 5; i++) {
+      for (i = 0; i < length; i++) {
         console.log("city", Object.keys(res.data[0].values[0].value)[i]);
         console.log("city values", keys.map(k => fieldValues[k])[i]);
         if (this.doughnutChartData.datasets) {
-          this.doughnutChartData.datasets[0].data[i] = keys.map(k => fieldValues[k])[i];
-          this.doughnutChartData.labels[i] = [Object.keys(res.data[0].values[0].value)[i]];
+          if(i<5){
+            this.doughnutChartData.datasets[0].data[i] = keys.map(k => fieldValues[k])[i];
+            this.doughnutChartData.labels[i] = [Object.keys(res.data[0].values[0].value)[i]];
+            this.doughnutChartData.datasets[0].data[5]=0;
+          }
+          else{
+            this.doughnutChartData.datasets[0].data[5] =this.doughnutChartData.datasets[0].data[5] + keys.map(k => fieldValues[k])[i];
+            this.doughnutChartData.labels[5] = "others";
+          }
         }
       }
       this.chart?.update();
@@ -112,49 +128,42 @@ export class FollowersDetailsVisualsComponent implements OnInit {
   fd_gender() {
     this.toDisplay_details = false;
     this.toDisplay_country = false;
-    this.toDisplay_locale = false;
     this.toDisplay_gender = true;
     this.toDisplay_age = false;
     this.toDisplay_city = false;
     let i;
     this.fd_service.gender_age(this.access_token, this.ig_id).subscribe((res: any) => {
+      let obj=res.data[0].values[0].value;
+      let length=Object.keys(obj).length;
       let fieldValues = res.data[0].values[0].value;
       let filedlabels = Object.keys(res.data[0].values[0].value);
       let keys = Object.keys(res.data[0].values[0].value);
       this.doughnutChartData.labels = [];
-      for (i = 0; i < 5; i++) {
-        console.log("city", Object.keys(res.data[0].values[0].value)[i]);
-        console.log("city values", keys.map(k => fieldValues[k])[i]);
+      for (i = 0; i < length; i++) {
+        console.log("gender age", Object.keys(res.data[0].values[0].value)[i]);
+        console.log("gender age values", keys.map(k => fieldValues[k])[i]);
         if (this.doughnutChartData.datasets) {
-          this.doughnutChartData.datasets[0].data[i] = keys.map(k => fieldValues[k])[i];
-          this.doughnutChartData.labels[i] = [Object.keys(res.data[0].values[0].value)[i]];
+          if(i<5){
+            this.doughnutChartData.datasets[0].data[i] = keys.map(k => fieldValues[k])[i];
+            this.doughnutChartData.labels[i] = [Object.keys(res.data[0].values[0].value)[i]];
+            this.doughnutChartData.datasets[0].data[5]=0;
+          }
+          else{
+            this.doughnutChartData.datasets[0].data[5] =this.doughnutChartData.datasets[0].data[5] + keys.map(k => fieldValues[k])[i];
+            this.doughnutChartData.labels[5] = "others";
+          }
         }
       }
       this.chart?.update();
     });
   }
-  fd_locale() {
-    this.toDisplay_details = false;
-    this.toDisplay_country = false;
-    this.toDisplay_locale = true;
-    this.toDisplay_gender = false;
-    this.toDisplay_age = false;
-    this.toDisplay_city = false;
-    let i;
-    this.fd_service.locale(this.access_token, this.ig_id).subscribe((res: any) => {
-      let fieldValues = res.data[0].values[0].value;
-      let filedlabels = Object.keys(res.data[0].values[0].value);
-      let keys = Object.keys(res.data[0].values[0].value);
-      this.doughnutChartData.labels = [];
-      for (i = 0; i < 5; i++) {
-        console.log("city", Object.keys(res.data[0].values[0].value)[i]);
-        console.log("city values", keys.map(k => fieldValues[k])[i]);
-        if (this.doughnutChartData.datasets) {
-          this.doughnutChartData.datasets[0].data[i] = keys.map(k => fieldValues[k])[i];
-          this.doughnutChartData.labels[i] = [Object.keys(res.data[0].values[0].value)[i]];
-        }
-      }
-      this.chart?.update();
-    });
+  city_details(){
+      this.router.navigate(['/followers-details','city']);
+  }
+  country_details(){
+    this.router.navigate(['/followers-details','country']);
+  }
+  gender_details(){
+    this.router.navigate(['/followers-details','gender_age']);
   }
 }

@@ -74,19 +74,88 @@ li{
     background-color: #ffff;
     margin-left: 13px;
 }
+.total_likes_option:hover{
+    background: #F3F4F6;
+    border-radius: 12px;
+}
+.total:hover{
+    background: #F3F4F6;
+    border-radius: 12px;
+}
+.total_likes_option{
+    text-align: center;
+    font-size: 20px;
+    color: #111827;
+    margin: 0px 7px 0px 7px;
+}
+.total{
+    text-align: center;
+    font-size: 20px;
+    color: #111827;
+    padding: 2px 0px 2px 0px;
+    margin: 0px 7px 0px 12px;
+}
 .week{
     text-align: center;
     font-size: 20px;
     color: #111827;
     padding: 5px 0px 5px 0px;
-    margin: 10px 7px 10px 7px;
+    margin: 0px 7px 5px 7px;
+}
+.options_div_total{
+    margin-top: -30px;
+position: absolute;
+width: 140px;
+height: 110px;
+background-color: #ffff;
+margin-left: 13px;
+}
+.link-to-media{
+    text-decoration: underline;
+    color: blue;
+    float: right;
+    margin-right: 10px;
+}
+.post-permalink{
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    margin-left: 120px;
+    margin-top: -12px;
+    font-size: 10px;
+    color: #23262F;
+}
+.angle-down4{
+    margin-left: -50px;
+    margin-right: -75px;
+    margin-top: -41px;
+    float: right;
+}
+.angle-up4{
+    margin-left: -50px;
+    margin-right: -75px;
+    margin-top: -41px;
+    float: right;
+}
+.see_more{
+    margin: 13px 0px 0px 215px;
+    width: 80px;
+    color: black;
+    border: none;
+    border-radius: 12px;
+}
+.logout{
+    position: absolute;
+    left: 150px;
+    color: red;
+    top: 20px;
 }
 .week_wbcs{
     text-align: center;
     font-size: 20px;
     color: #111827;
     padding: 5px 0px 5px 0px;
-    margin: 75px 7px 25px 7px;
+    margin: 55px 7px 25px 7px;
 }
 .week_wbcs:hover{
     background: #F3F4F6;
@@ -104,12 +173,23 @@ li{
     background: #F3F4F6;
     border-radius: 12px;
 }
+.month_wbcs:hover{
+    background: #F3F4F6;
+    border-radius: 12px;
+}
 .month{
     text-align: center;
     font-size: 20px;
     color: #111827;
     padding: 5px 0px 5px 0px;
-    margin: 10px 7px 10px 12px;
+    margin: 5px 7px 5px 12px;
+}
+.month_wbcs{
+    text-align: center;
+    font-size: 20px;
+    color: #111827;
+    padding: 5px 0px 5px 0px;
+    margin: 5px 7px 25px 12px;
 }
 .angle-down2{
     width: 20px;
@@ -518,7 +598,8 @@ border-bottom: 1px solid #E8E8E8;
     font-size: 18px;
 }
 .doughnut-lg{
-    width: 250px;
+    width: 270px;
+    margin-top: -20px;
     margin-left: 60px;
 }
 .city_text{
@@ -644,12 +725,10 @@ border-bottom: 1px solid #E8E8E8;
     margin-bottom: -5px;
 }
 .tl_percentage_change{
-    width: 36px;
     font-family: 'Quicksand';
     font-weight: 700;
-    top: 120px;
-    left: 275px;
-    position: absolute;
+    margin-top: -24px;
+    margin-left: 40px;
     font-size: 18px;
     color: #613DC1;
 }

@@ -10,9 +10,10 @@ export class LoginService {
   constructor(private http : HttpClient, private router : Router) { }
   Login(req:any){
     this.http.post('http://localhost:5000/login',(req)).subscribe((res:any)=>{
-      alert(res.msg);
       if(res.msg==="Login Successfull"){
-        localStorage.setItem("jwt",res.jwt);
+        alert(res.msg);
+        //localStorage.setItem("jwt",res.jwt);
+        localStorage.setItem("email",req.email);
         this.router.navigate(['/login-with-facebook']);
       }
       else{

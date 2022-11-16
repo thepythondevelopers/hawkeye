@@ -1,0 +1,18 @@
+<h1 *ngIf="city">City Insights</h1>
+<h1 *ngIf="country">Country Insights</h1>
+<h1 *ngIf="gender_age">Gender Insights</h1>
+<ul>
+    <li *ngFor="let city of cities"> 
+       {{city}}
+    </li>
+  </ul>
+  <ul>
+    <li *ngFor="let country of countries"> 
+       {{country}}
+    </li>
+  </ul>
+  <ul>
+    <li *ngFor="let gender of genders"> 
+       {{gender}}
+    </li>
+  </ul>

@@ -1,0 +1,20 @@
+<div class="form_box">
+    <h2 class="heading1">Impression Insights</h2>
+    <form class="reach_form" #reach="ngForm" (ngSubmit)="impdata(reach.value)">
+    <label>Select Starting date:</label>
+    <input class="input" name="date" required #date="ngModel" type="date" date placeholder="Provide a starting date" ngModel />
+    <br />
+    <br />
+    <label>Select time period range:</label>
+    <select name="period" id="period" ngModel>
+        <option value="week">Week</option>
+        <option value="month">Month</option>
+      </select>
+    <br />
+    <br />
+    <button class="login_btn" type="submit">Get Insights</button>
+    </form>
+    <div *ngIf="display_error" class="error">* {{error}}</div>
+    <div *ngIf="display_count" class="count">Impression Count: {{reach_count}}</div>
+    <div *ngIf="display_count" class="count">Percentage Change: {{reach_pc}}%</div>
+</div>

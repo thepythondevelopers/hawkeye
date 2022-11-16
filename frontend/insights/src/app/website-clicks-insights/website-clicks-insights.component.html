@@ -1,0 +1,22 @@
+<div class="form_box">
+    <h2 class="heading1">Website Clicks Insights</h2>
+    <form class="reach_form" #reach="ngForm" (ngSubmit)="wbcsdata(reach.value)">
+    <label>Select Starting date:</label>
+    <input class="input" name="date" required #date="ngModel" type="date" date placeholder="Provide a starting date" ngModel />
+    <br />
+    <br />
+    <label>Select time period range:</label>
+    <select name="period" id="period" ngModel>
+        <option value="week">Week</option>
+        <option value="month">Month</option>
+      </select>
+    <br />
+    <br />
+    <button class="login_btn" type="submit">Get Insights</button>
+    </form>
+    <div *ngIf="display_error" class="error">* {{error}}</div>
+    <div *ngIf="display_count" class="count">Clicks Count: {{wcs_count}}</div>
+    <div *ngIf="display_count" class="count">Percentage Change: {{wcs_percentage_change}}%</div>
+    <div *ngIf="displayweekchart" class="lg"><canvas class="line-graph" baseChart width="600" height="450" [type]="lineChartType" [options]="lineChartOptions" [data]="lineChartDataweek"></canvas></div>
+    <div *ngIf="displaymonthchart" class="lg"><canvas class="line-graph" baseChart width="600" height="450" [type]="lineChartType" [options]="lineChartOptions" [data]="lineChartDatamonth"></canvas></div>
+</div>

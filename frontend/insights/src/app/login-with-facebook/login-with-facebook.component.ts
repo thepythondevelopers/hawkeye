@@ -24,6 +24,14 @@ export class LoginWithFacebookComponent implements OnInit {
         this.router.navigate(['/dashboard']);  
       }
     }*/
+    if(!localStorage.getItem("email")){
+      this.router.navigate(['/signup']);
+    }
+    else{
+      if(localStorage.getItem("auth_token")){
+        this.router.navigate(['/dashboard']);  
+      }
+    }
    }
 
    ngOnInit() {
@@ -49,6 +57,7 @@ export class LoginWithFacebookComponent implements OnInit {
       this.ig_id=res.data[0].instagram_business_account.id;
       localStorage.setItem("access_token",this.access_token);
       localStorage.setItem("ig_id",this.ig_id);
+      this.router.navigate(['/dashboard']);
     });
   }
 }

@@ -1,0 +1,127 @@
+.heading{
+    position: relative;
+    width: 130px;
+    left: 265px;
+    top: 83px;
+    font-size: 28px;
+    color: #3A3A49;
+}
+.dollar2{
+    font-size: 29px;
+    top: 255px;
+    left: 785px;
+    position: absolute;
+}
+.dollar3{
+    font-size: 29px;
+    top: 255px;
+    left: 1197px;
+    position: absolute;
+}
+.dollar1{
+    font-size: 29px;
+    top: 255px;
+    left: 370px;
+    position: absolute;
+}
+.text-inside-purple1{
+    font-weight: 700;
+    font-size: 49px;
+    line-height: 61px;
+    text-align: center;
+    color: #FFFFFF;
+}
+.text-inside-purple2{
+    position: absolute;
+    width: 355px;
+    height: 87px;
+    font-size: 21px;
+    text-align: center;
+    color: #FFFFFF;
+}
+hr{
+    width: 270px;
+    height: 0px;
+    margin-left: 0px;
+    border: 1px solid #EBEBEB;
+}
+.start-trial{
+    border: none;
+    color: #FFFFFF;
+    width: 236px;
+    height: 34px;
+    margin-left: 65px;
+    margin-top: 10px;
+    background: #858AE3;
+    border-radius: 5px;
+}
+.features{
+    padding-left: 10px;
+}
+
+.points{
+    list-style-type: none;
+    margin-left: 10px;
+    margin-top: 30px;
+}
+.purple{
+width: 355px;
+height: 95px;
+left: 265px;
+top: 215px;
+background: #613DC1;
+border-radius: 0px;
+}
+.rights{
+    position: absolute;
+    width: 279px;
+    height: 15px;
+    left: 751px;
+    top: 800px;
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.02em;
+    color: #3A3A49;
+}
+.pricing_options{
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+.box2{
+    width: 355px;
+    height: 534px;
+    margin-left: 0px;
+    margin-top: 100px;
+    background: #FFFFFF;
+    box-shadow: 1px 2px 3px rgb(70 118 251 / 41%);
+    border-radius: 12px;
+}
+.box3{
+    width: 355px;
+    height: 534px;
+    margin-left: 0pxpx;
+    margin-top: 100px;
+    background: #FFFFFF;
+    box-shadow: 1px 2px 3px rgb(70 118 251 / 41%);
+    border-radius: 12px;
+}
+.pricing_box{
+    width: 355px;
+    height: 534px;
+    margin-left: 265px;
+    margin-top: 100px;
+    background: #FFFFFF;
+    box-shadow: 1px 2px 3px rgb(70 118 251 / 41%);
+    border-radius: 12px;
+}
+.pricing_select_text{
+    font-size: 25px;
+    color: #666666;
+    text-align: center;
+    padding-top: 20px;
+}

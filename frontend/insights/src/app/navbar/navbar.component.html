@@ -1,0 +1,16 @@
+<div class="navbar">
+    <img class="menu_icon" src="../assets/images/menu-alt-1.png" alt="menu_img">
+    <img class="Hawkeye2_icon" src="../assets/images/Hawkeye2.png" alt="Hawkeye2_img">
+    <form>
+    <input type="text" placeholder="Search"/>
+    <button class="search" type="submit"><img class="search_icon" src="../assets/images/search.png" alt="search_img"></button>
+    </form>
+    <img class="bell_wn_icon" src="../assets/images/bell_wn.png" alt="bell_wn_img">
+    <!--<ngx-avatar class="Avatar_icon" src={{base64String}}></ngx-avatar>-->
+    <img class="Avatar_icon" src="../assets/images/Avatar.png" alt="avatar_img">
+    <div (click)="dropdown_beside_profile()" *ngIf="!toDisplay_dropdown_beside_profile" class="angle-down_bp"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div (click)="dropdown_beside_profile()" *ngIf="toDisplay_dropdown_beside_profile" class="angle-up_bp"><i class="fa fa-angle-up" aria-hidden="true"></i></div>
+    <div class="profile_options" *ngIf="toDisplay_dropdown_beside_profile">
+    <div class="profile_text" (click)="profile()">Profile</div>
+    <div class="logout_text" (click)="logout()">Logout</div>
+    </div>
+    </div>

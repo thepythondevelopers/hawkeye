@@ -1,34 +1,7 @@
-<div class="sidebar">
-<img class="dashboard_sidebar_icon" src="../assets/images/Vector.png" alt="dashboard_icon_img">
-<img class="dashboard_sidebar_icon2" src="../assets/images/vector2.png" alt="dashboard_icon2_img">
-<ul>
-    <li class="dashboard_text">Dashboard</li>
-    <li (click)="toggleData1()" class="text"><img class="pages_icon" src="../assets/images/pages.png" alt="pages_img"><div class="pages-and-sales-div">Pages</div><div *ngIf="!toDisplay1" class="angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay1" class="angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
-    <li (click)="toggleData()" class="text"><img class="sales_icon" src="../assets/images/sales.png" alt="sales_img"><div class="pages-and-sales-div">Sales</div><div *ngIf="!toDisplay" class="angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay" class="angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
-    <li *ngIf="toDisplay" class="text">Product List</li>
-    <li *ngIf="toDisplay" class="text">Billing</li>
-    <li *ngIf="toDisplay" class="text">Invoice</li>
-    <li class="text"><img class="inbox_icon" src="../assets/images/inbox-in.png" alt="inbox_img"><div class="mess-div">Messages</div></li>
-    <li (click)="toggleData3()" class="text"><img class="lock_icon" src="../assets/images/lock.png" alt="lock_img"><div class="auth-div">Authentication</div><div *ngIf="!toDisplay3" class="angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay3" class="angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
-    <hr />
-    <li class="text"><img class="docs_icon" src="../assets/images/clipboard-list.png" alt="docs_img"><div class="docs-div">Docs</div></li>
-    <li class="text"><img class="components_icon" src="../assets/images/collection.png" alt="components_img"><div class="comp-div">Components</div></li>
-    <li class="text"><img class="support_icon" src="../assets/images/support.png" alt="support_img"><div class="help-div">Help</div></li>
-</ul>
-</div>
-<div class="navbar">
-<img class="menu_icon" src="../assets/images/menu-alt-1.png" alt="menu_img">
-<img class="Hawkeye2_icon" src="../assets/images/Hawkeye2.png" alt="Hawkeye2_img">
-<form>
-<input type="text" placeholder="Search"/>
-<button class="search" type="submit"><img class="search_icon" src="../assets/images/search.png" alt="search_img"></button>
-</form>
-<img class="bell_wn_icon" src="../assets/images/bell_wn.png" alt="bell_wn_img">
-<img class="Avatar_icon" src="../assets/images/Avatar.png" alt="avatar_img">
-</div>
+<app-navbar></app-navbar>
+<app-sidebar></app-sidebar>
 <div class="main">
     <h2>Dashboard</h2>
-    <button class="logout" (click)="logout()">Logout</button>
     <div class="grid-container">
     <div class="d1 reach">
         <h3 class="reach_block" (click)="select_reach_period()"><span *ngIf="toDisplay_reach_period_week" class="w">W</span><span class="m" *ngIf="toDisplay_reach_period_30">M</span>Reach<div *ngIf="!toDisplay_reach_period" class="angle-down2"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_reach_period" class="angle-up2"><i class="fa fa-angle-up" aria-hidden="true"></i></div></h3>
@@ -156,7 +129,9 @@
                 <div *ngIf="toDisplay_tpcount_comments" class="timestamp">Comments : {{toppost_by_likes0}}</div>
                 <div *ngIf="toDisplay_tpcaptions_comments" class="post-permalink"><a class="link-to-media" href={{toppost_permalink0}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcount_reach" class="timestamp">Reach : {{toppost_by_likes0}}</div>
+                <div *ngIf="toDisplay_tpcount_reach" class="post-permalink"><a class="link-to-media" href={{toppost_permalink0}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcount_saved" class="timestamp">Saved : {{toppost_by_likes0}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-permalink"><a class="link-to-media" href={{toppost_permalink0}}>Link to media</a></div>
             </div>
             <div class="ps">
                 <div class="thumbnail_img">2</div>
@@ -169,7 +144,9 @@
                 <div *ngIf="toDisplay_tpcount_comments" class="timestamp">Comments : {{toppost_by_likes1}}</div>
                 <div *ngIf="toDisplay_tpcaptions_comments" class="post-permalink"><a class="link-to-media" href={{toppost_permalink1}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcount_reach" class="timestamp">Reach : {{toppost_by_likes1}}</div>
+                <div *ngIf="toDisplay_tpcount_reach" class="post-permalink"><a class="link-to-media" href={{toppost_permalink1}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcount_saved" class="timestamp">Saved : {{toppost_by_likes1}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-permalink"><a class="link-to-media" href={{toppost_permalink1}}>Link to media</a></div>
             </div>
             <div class="ps">
                 <div class="thumbnail_img">3</div>
@@ -182,7 +159,9 @@
                 <div *ngIf="toDisplay_tpcaptions_comments" class="timestamp">Comments : {{toppost_by_likes2}}</div>
                 <div *ngIf="toDisplay_tpcaptions_comments" class="post-permalink"><a class="link-to-media" href={{toppost_permalink2}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcaptions_reach" class="timestamp">Reach : {{toppost_by_likes2}}</div>
+                <div *ngIf="toDisplay_tpcount_reach" class="post-permalink"><a class="link-to-media" href={{toppost_permalink2}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcaptions_saved" class="timestamp">Saved : {{toppost_by_likes2}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-permalink"><a class="link-to-media" href={{toppost_permalink2}}>Link to media</a></div>
             </div>
             <div class="ps">
                 <div class="thumbnail_img">4</div>
@@ -195,7 +174,9 @@
                 <div *ngIf="toDisplay_tpcaptions_comments" class="timestamp">Comments : {{toppost_by_likes3}}</div>
                 <div *ngIf="toDisplay_tpcaptions_comments" class="post-permalink"><a class="link-to-media" href={{toppost_permalink3}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcaptions_reach" class="timestamp">Reach : {{toppost_by_likes3}}</div>
+                <div *ngIf="toDisplay_tpcount_reach" class="post-permalink"><a class="link-to-media" href={{toppost_permalink3}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcaptions_saved" class="timestamp">Saved : {{toppost_by_likes3}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-permalink"><a class="link-to-media" href={{toppost_permalink3}}>Link to media</a></div>
             </div>
             <div class="ps">
                 <div class="thumbnail_img">5</div>
@@ -208,7 +189,9 @@
                 <div *ngIf="toDisplay_tpcaptions_comments" class="timestamp">Comments : {{toppost_by_likes4}}</div>
                 <div *ngIf="toDisplay_tpcaptions_comments" class="post-permalink"><a class="link-to-media" href={{toppost_permalink4}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcaptions_reach" class="timestamp">Reach : {{toppost_by_likes4}}</div>
+                <div *ngIf="toDisplay_tpcount_reach" class="post-permalink"><a class="link-to-media" href={{toppost_permalink4}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcaptions_saved" class="timestamp">Saved : {{toppost_by_likes4}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-permalink"><a class="link-to-media" href={{toppost_permalink4}}>Link to media</a></div>
             </div>
             <div class="ps">
                 <div class="thumbnail_img">6</div>
@@ -221,7 +204,9 @@
                 <div *ngIf="toDisplay_tpcaptions_comments" class="timestamp">Comments : {{toppost_by_likes5}}</div>
                 <div *ngIf="toDisplay_tpcaptions_comments" class="post-permalink"><a class="link-to-media" href={{toppost_permalink5}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcaptions_reach" class="timestamp">Reach : {{toppost_by_likes5}}</div>
+                <div *ngIf="toDisplay_tpcount_reach" class="post-permalink"><a class="link-to-media" href={{toppost_permalink5}}>Link to media</a></div>
                 <div *ngIf="toDisplay_tpcaptions_saved" class="timestamp">Saved : {{toppost_by_likes5}}</div>
+                <div *ngIf="toDisplay_tpcaptions_saved" class="post-permalink"><a class="link-to-media" href={{toppost_permalink5}}>Link to media</a></div>
             </div>
         </div>
     </div>

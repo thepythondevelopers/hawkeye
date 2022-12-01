@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { AvatarModule } from 'ngx-avatar';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +24,14 @@ import { ImpressionCalenderComponent } from './impression-calender/impression-ca
 import { NewpostCalenderComponent } from './newpost-calender/newpost-calender.component';
 import { WebsiteClicksInsightsComponent } from './website-clicks-insights/website-clicks-insights.component';
 import { ProfileVisitsCalenderComponent } from './profile-visits-calender/profile-visits-calender.component';
+import { PricingComponent } from './pricing/pricing.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import {NgxStripeModule} from 'ngx-stripe';
+import { SuccessComponent } from './success/success.component';
+import { CancelComponent } from './cancel/cancel.component';
+import { NgToastModule } from 'ng-angular-popup';
+
 
 @NgModule({
   declarations: [
@@ -44,6 +53,11 @@ import { ProfileVisitsCalenderComponent } from './profile-visits-calender/profil
     NewpostCalenderComponent,
     WebsiteClicksInsightsComponent,
     ProfileVisitsCalenderComponent,
+    PricingComponent,
+    SidebarComponent,
+    NavbarComponent,
+    SuccessComponent,
+    CancelComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +66,8 @@ import { ProfileVisitsCalenderComponent } from './profile-visits-calender/profil
     FormsModule,
     SocialLoginModule,
     NgChartsModule,
+    NgToastModule,
+    AvatarModule
   ],
   providers: [
     {

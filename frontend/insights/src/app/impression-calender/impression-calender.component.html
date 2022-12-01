@@ -1,20 +1,34 @@
-<div class="form_box">
+<app-navbar></app-navbar>
+<app-sidebar></app-sidebar>
+<div class="box">
+  <div class="form_box">
     <h2 class="heading1">Impression Insights</h2>
     <form class="reach_form" #reach="ngForm" (ngSubmit)="impdata(reach.value)">
-    <label>Select Starting date:</label>
-    <input class="input" name="date" required #date="ngModel" type="date" date placeholder="Provide a starting date" ngModel />
-    <br />
-    <br />
-    <label>Select time period range:</label>
-    <select name="period" id="period" ngModel>
-        <option value="week">Week</option>
-        <option value="month">Month</option>
-      </select>
-    <br />
-    <br />
-    <button class="login_btn" type="submit">Get Insights</button>
+      <div class="label">
+        <br>
+        <label>Select Starting date:</label>
+        <label>Select time period range:</label>
+        </div><br>
+        <div class="input">
+          <input class="calender_input" name="date" required #date="ngModel" type="date" date placeholder="Provide a starting date" ngModel />
+        <select name="period" id="period" ngModel>
+          <option value="week">Week</option>
+          <option value="month">Month</option>
+        </select>
+        <button class="login_btn" type="submit">Get Insights</button>
+        </div>
     </form>
-    <div *ngIf="display_error" class="error">* {{error}}</div>
-    <div *ngIf="display_count" class="count">Impression Count: {{reach_count}}</div>
-    <div *ngIf="display_count" class="count">Percentage Change: {{reach_pc}}%</div>
+    <!--<div *ngIf="display_error" class="error">* {{error}}</div>-->
+    <div class="reach_block">
+      <div *ngIf="display_count" class="reach_block_count">
+        <div class="count">{{reach_count}}</div>
+        <div class="count_text">Impression Count</div>
+        </div>
+        <div *ngIf="display_count" class="reach_block_percentage">
+        <div class="count">{{reach_pc}}%</div>
+        <div class="count_text">Percentage Change</div>
+        </div>
+    </div>
 </div>
+</div>
+<span class="rights">2022 © All Rights Reserved. Terms of Service</span>

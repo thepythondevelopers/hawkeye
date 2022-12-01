@@ -132,6 +132,15 @@ export class ProfileVisitsVisualsComponent implements OnInit {
         this.wcs_percentage_change='--';
     }
       });
+      },
+      (error) => {
+        let error_message=error.error.error.message.substring(31,50);
+        if(error_message==='Session has expired'){
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('ig_id');
+          this.router.navigate(['/login-with-facebook']);
+        }
       });
   }
   pv_30(){

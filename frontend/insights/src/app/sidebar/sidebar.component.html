@@ -1,0 +1,29 @@
+<div class="sidebar">
+    <img (click)="ndp()" class="dashboard_sidebar_icon" src="../assets/images/Vector.png" alt="dashboard_icon_img">
+    <img (click)="ndp()" class="dashboard_sidebar_icon2" src="../assets/images/vector2.png" alt="dashboard_icon2_img">
+    <ul>
+        <li (click)="ndp()" class="dashboard_text">Dashboard</li>
+        <li (click)="toggleData1()" class="text"><img class="pages_icon" src="../assets/images/pages.png" alt="pages_img"><div class="pages-and-sales-div">Pages</div><div *ngIf="!toDisplay1" class="angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay1" class="angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
+        <li (click)="ndp()" *ngIf="toDisplay1" class="text">Dashboard</li>
+        <li (click)="fdp()" *ngIf="toDisplay1" class="text">Followers Details<div *ngIf="!toDisplay_fdo" class="fd-angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay_fdo" class="fd-angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
+        <li (click)="bcity()" *ngIf="toDisplay_fdo" class="text">By City</li>
+        <li (click)="bcountry()" *ngIf="toDisplay_fdo" class="text">By Country</li>
+        <li (click)="bga()" *ngIf="toDisplay_fdo" class="text">By Gender and Age</li>
+        <li (click)="idp()" *ngIf="toDisplay1" class="text">Impressions</li>
+        <li (click)="rdp()" *ngIf="toDisplay1" class="text">Reach</li>
+        <li (click)="npdp()" *ngIf="toDisplay1" class="text">New posts</li>
+        <li (click)="wdp()" *ngIf="toDisplay1" class="text">Webiste Clicks</li>
+        <li (click)="pcdp()" *ngIf="toDisplay1" class="text">Profile Clicks</li>
+        <li (click)="toggleData()" class="text"><img class="sales_icon" src="../assets/images/sales.png" alt="sales_img"><div class="pages-and-sales-div">Suscription</div><div *ngIf="!toDisplay" class="angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay" class="angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
+        <li *ngIf="toDisplay" class="text">Upgarde</li>
+        <li *ngIf="toDisplay" class="text">Cancel</li>
+        <li class="text"><img class="inbox_icon" src="../assets/images/inbox-in.png" alt="inbox_img"><div class="mess-div">Results captured</div></li>
+        <li class="text"><img class="lock_icon" src="../assets/images/lock.png" alt="lock_img"><div class="auth-div">Privacy Policy</div></li>
+        <hr />
+        <li class="text"><img class="docs_icon" src="../assets/images/clipboard-list.png" alt="docs_img"><div class="docs-div">Terms and Conditions</div></li>
+        <li class="text"><img class="components_icon" src="../assets/images/collection.png" alt="components_img"><div class="comp-div">Contact Us</div></li>
+        <li (click)="toggleData3()" class="text"><img class="support_icon" src="../assets/images/support.png" alt="support_img"><div class="help-div">Settings</div><div *ngIf="!toDisplay3" class="angle-down"><i class="fa fa-angle-down" aria-hidden="true"></i></div><div *ngIf="toDisplay3" class="angle-up"><i class="fa fa-angle-up" aria-hidden="true"></i></div></li>
+        <li *ngIf="toDisplay3" class="text">Update Profile</li>
+        <li *ngIf="toDisplay3" class="text">Change card</li>
+    </ul>
+    </div>

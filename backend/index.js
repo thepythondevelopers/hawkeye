@@ -1,56 +1,189 @@
+require('dotenv').config();
+const stripe = require('stripe')('sk_test_51LD42cSJb05mAKIhulGhSsRo6e7v8OAA4IdkNBkCQPwIacUSOFybWXogCp3m1aDJ3CGrKvsPIk6gS2hGGJbAwjjN00LEG1yqfb');
 const express = require('express');
-
+const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const app = express();
 app.use(cors());
+app.use(express.static('public'));
 const mongoose = require('mongoose');
 const User = require('./models/users');
 const Following = require('./models/following');
+var fs = require('fs');
+var path = require('path');
 var bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const { rmSync } = require('fs');
+var imgModel = require('./models/users');
 const jwtKey = "jwt";
 var jsonParser = bodyParser.json();
-mongoose.connect('mongodb+srv://raj:raj@cluster0.aeacp5p.mongodb.net/Instagram?retryWrites=true&w=majority', {
+mongoose.connect(process.env.connecting_string, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
     console.log("connected");
 })
-app.get('/', async (req, res) => {
-    res.send("Hello World");
+
+var multer = require('multer');
+  
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+});
+  
+var upload = multer({ storage: storage });
+
+app.post('/update_profile_image', upload.single('image'), (req, res, next) => {
+    User.findOne({ email: req.body.email }).then(async (data) => {
+                    await User.updateOne({email: req.body.email},{
+                        $set:{
+                            updated_profile_img: {
+                                data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+                                contentType: 'image/png'
+                            }
+                        }
+                    })
+    })
+    res.send({"msg":"Profile image updated Successfull"});
+});
+
+app.post('/create-checkout-session', jsonParser, async (req, res)=> {
+    const session = await stripe.checkout.sessions.create({
+        success_url: process.env.success_url,
+        cancel_url: process.env.cancel_url,
+        line_items: [
+          {price: req.body.price_id, quantity: 1},
+        ],
+        mode: 'subscription',
+      });
+    console.log("session",session);
+    res.send(session);
+})
+app.get('/payment_lists',async(req,res)=>{
+    const paymentIntents = await stripe.paymentIntents.list({
+      });
+      res.send(paymentIntents);
+})
+app.post('/customer_details', jsonParser, async(req, res)=>{
+    const customer = await stripe.customers.retrieve(
+        req.body.customer
+      );
+      res.send(customer);
+})
+app.post('/save_subscription', jsonParser, async(req, res)=>{
+    let suscribed_plan="Null"
+    if(req.body.amount===1900){
+    console.log("email",req.body.email);
+    console.log("amount",req.body.amount);
+       suscribed_plan = "Freelancer";
+       console.log(suscribed_plan)
+    }
+    else if(req.body.amount===2400){
+        suscribed_plan = "Agency";
+     }
+     else if(req.body.amount===3400){
+        suscribed_plan = "Enterprise";
+     }
+    await User.updateOne({email: req.body.email},{
+        $set:{
+            plan : suscribed_plan
+        }
+    })
+    res.send({"suscription":"success"});
+})
+app.post('/get_plans',jsonParser,function (req, res) {
+    User.findOne({ email: req.body.email }).then((data) => {
+        res.send({"plan":data.plan})
+    })
+        
+    })
+app.post('/set-profile-image',jsonParser,async(req,res)=>{
+    User.findOne({ email: req.body.email }).then(async (data) => {
+        if(data.insta_profile_image==="" && data.updated_profile_img===""){
+            await User.updateOne({email: req.body.email},{
+                $set:{
+                    insta_profile_image : req.body.profile_image
+                }
+            })
+            console.log("requested profile image=",req.body.profile_image);
+            res.send({"msg":"image set"});
+        }
+        else{
+            if(data.updated_profile_img!==""){
+                res.send({"profile_image":data.updated_profile_img});
+            }
+            else{
+                res.send({"profile_image":data.profile_image});
+            }
+        }
+    })
+})
+app.post('/customer_details', jsonParser, async(req, res)=>{
+    const customer = await stripe.customers.retrieve(
+        req.body.customer
+      );
+      res.send(customer);
 })
 app.post('/login', jsonParser, function (req, res) {
     User.findOne({ email: req.body.email }).then((data) => {
         console.log("data",data.password)
-        if (data.password === req.body.password) {
-            jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
-                await User.updateOne({email: req.body.email},{
-                    $set:{
-                        token : token
-                    }
+        bcrypt.compare(req.body.password, data.password, 
+            async function (err, isMatch) {
+            // Comparing the original password to
+            // encrypted password   
+            if (isMatch) {
+                jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
+                    await User.updateOne({email: req.body.email},{
+                        $set:{
+                            token : token
+                        }
+                    })
+                    res.status(200).send({"msg":"Login Successfull","jwt":token});
                 })
-                res.status(200).send({"msg":"Login Successfull","jwt":token});
-            })
-        }
-        else{
-            res.status(400).send({"msg":"EmailID and Password Does'nt Match"});
-        }
+            }
+  
+            if (!isMatch) {
+                res.status(400).send({"msg":"EmailID and Password Does'nt Match"});
+            }
+        })
     })
 })
 app.post('/register', jsonParser, function (req, res) {
-    const data = new User({
-        _id: mongoose.Types.ObjectId(),
-        fname: req.body.fname,
-        lname: req.body.lname,
-        email: req.body.email,
-        password: req.body.password,
-        token:"0"
+    var password = req.body.password;
+    var hashedPassword;
+    // Encryption of the string password
+    bcrypt.genSalt(10, function (err, Salt) {
+  
+    // The bcrypt is used for encrypting password.
+    bcrypt.hash(password, Salt, function (err, hash) {
+  
+        if (err) {
+            console.log('Cannot encrypt');
+        }
+  
+        hashedPassword = hash;
+        console.log("hash",hash);
+        const data = new User({
+            _id: mongoose.Types.ObjectId(),
+            fname: req.body.fname,
+            lname: req.body.lname,
+            email: req.body.email,
+            password: hashedPassword,
+            token:"0",
+            plan:"Null", 
+            insta_profile_image:"",
+            updated_profile_img:""
+        })
+        data.save().then((result) => {
+            console.log("result",result);
+                res.status(201).send({"msg":"registration successfull"});
+        }).catch((err) => console.log(err));
     })
-    data.save().then((result) => {
-        console.log("result",result);
-            res.status(201).send({"msg":"registration successfull"});
-    }).catch((err) => console.log(err));
+})
 })
 app.get('/users', verifyToken, function (req, res) {
     User.find().then((result) => {

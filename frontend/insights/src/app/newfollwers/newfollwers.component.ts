@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts';
 import { NewfollowersService } from '../newfollowers.service';
 
@@ -23,7 +24,6 @@ export class NewfollwersComponent implements OnInit {
   select_profile_period() {
     this.toDisplay_profile_period = !this.toDisplay_profile_period;
   }
-
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   barChartData = {
@@ -62,7 +62,7 @@ export class NewfollwersComponent implements OnInit {
     } 
   }
 
-  constructor( private newfollowers : NewfollowersService) {
+  constructor( private newfollowers : NewfollowersService,private router: Router) {
     this.access_token=localStorage.getItem("access_token");
     this.ig_id=localStorage.getItem("ig_id");
     this.nfs_week();
@@ -109,6 +109,9 @@ export class NewfollwersComponent implements OnInit {
         this.newfollowers_p=this.newfollowers_p+Object.entries(resp)[0][1][0].values[i].value;
        }
        this.newfollowers_pc=((this.newfollowers_c-this.newfollowers_p)/this.newfollowers_p)*100;
+       if(this.newfollowers_p===0){
+        this.newfollowers_pc=0;
+       }
       });
     });
     }

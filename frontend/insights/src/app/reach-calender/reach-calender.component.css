@@ -1,3 +1,146 @@
 .error{
     color:red;
 }
+.heading1{
+    width: 363.92px;
+    height: 31px;
+    margin-left: 46px;
+    margin-top: 43px;
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 31px;
+    display: flex;
+    align-items: flex-end;
+    color: #343434;
+}
+.count_text{
+    height: 31px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+    color: #343434;
+}
+.count{
+    font-family: 'Quicksand';
+    font-style: normal;
+    margin-top: 20px;
+    font-weight: 700;
+    text-align: center;
+    font-size: 38px;
+    color: #613DC1;
+}
+.reach_block_count{
+    width: 225px;
+    height: 128px;
+    margin-top: 30px;
+    margin-left: 50px;
+    top: 379px;
+    background: #E6DCFF;
+    border-radius: 10px;
+}
+.reach_block{
+    display: flex;
+}
+.reach_block_percentage{
+    width: 290px;
+    height: 128px;
+    margin-left: 30px;
+    margin-top: 30px;
+    background: #E1FFDC;
+    border-radius: 10px;
+}
+
+.reach_form{
+    width: 954px;
+    height: 113px;
+    margin-left: 47px;
+    background: #E8F7FF;
+    border-radius: 10px;
+}
+select{
+    width: 200px;
+    height: 30px;
+}
+.rights{
+    width: 279px;
+    height: 15px;
+    margin-left: 671px;
+    margin-top: 800px;
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.02em;
+    color: #3A3A49;
+}
+button{
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    padding: 6px 37px;
+    margin-right: 90px;
+    float: right;
+    border: 0px;
+    gap: 10px;
+    text-align: center;
+    color: #FFFFFF;
+    width: 167px;
+    font-weight: 600;
+    font-size: 16px;
+    height: 34px;
+    background: linear-gradient(90deg, #613DC1 0%, #858AE3 100%);
+    border-radius: 5px;
+}
+.box{
+    position: absolute;
+    width: 1038px;
+    height: 591px;
+    left: 350px;
+    top: 92px;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 4px 18px rgba(0, 0, 0, 0.13);
+    border-radius: 14px;
+}
+label{
+    padding: 0px 200px 0px 30px;
+    width: 157px;
+    height: 20px;
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #000000;
+}
+select{
+    width: 200px;
+    height: 30px;
+    box-sizing: border-box;
+    width: 283px;
+    height: 35px;
+    margin-left: 80px;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.input{
+    margin-left: 30px;
+}
+.calender_input{
+    box-sizing: border-box;
+    width: 283px;
+    height: 35px;
+    margin-left: 0px;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}

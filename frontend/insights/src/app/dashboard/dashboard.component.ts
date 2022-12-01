@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit,ViewChild } from '@angular/core';
-import {ChartData, Chart,ChartConfiguration,ChartType} from 'node_modules/chart.js';
+import {ChartData, Chart,ChartConfiguration,ChartType, TimeScale} from 'node_modules/chart.js';
 import {registerables } from 'chart.js';
 import { Router } from '@angular/router';
 import { SocialAuthService, FacebookLoginProvider } from '@abacritt/angularx-social-login';
@@ -20,6 +20,7 @@ import { WbcsService } from '../wbcs.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { MediaTypeService } from '../media-type.service';
 import { TotalFollowingService } from '../total-following.service';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +29,7 @@ import { TotalFollowingService } from '../total-following.service';
 })
 export class DashboardComponent implements OnInit{
   toDisplay = false;
+  toDisplay_pages = false;
   toDisplay1 = false;
   toDisplay3 = false;
   res_id:any;
@@ -40,7 +42,6 @@ export class DashboardComponent implements OnInit{
   unit_change:number=0;
   Reach_day: any;
   Reach_week: any;
-  saved_array: Array<Object>=[];
   impressions_day: any;
   impressions_week: any;
   imp_percentage_change: any;
@@ -53,6 +54,7 @@ export class DashboardComponent implements OnInit{
   new_following_pcm:number=0;
   new_following_pcw:number=0;
   toDisplay_reach_period=false;
+  toDisplay_dropdown_beside_profile=false;
   toDisplay_profile_period=false;
   toDisplay_website_period=false;
   Reach_weekp: any;
@@ -146,17 +148,9 @@ export class DashboardComponent implements OnInit{
   toppost_permalink2:string="";
   toppost_permalink3:string="";
   toppost_permalink4:string="";
-  
+  toDisplay_fdo=false;
 
-  toggleData() {
-    this.toDisplay = !this.toDisplay;
-  }
-  toggleData1() {
-    this.toDisplay1 = !this.toDisplay1;
-  }
-  toggleData3() {
-    this.toDisplay3 = !this.toDisplay3;
-  }
+
   select_reach_period() {
     this.toDisplay_reach_period = !this.toDisplay_reach_period;
   }
@@ -387,6 +381,9 @@ export class DashboardComponent implements OnInit{
     setInterval(() => {
       this.t_following();
     },86400000);
+  }
+  profile(){
+
   }
   signInWithFB(): void {
     const fbLoginOptions = {
@@ -657,6 +654,7 @@ export class DashboardComponent implements OnInit{
     })
   }
   tp_saved(){
+    environment.env_var_tp_saved=0;
     this.toDisplay_toppost_options=false;
     this.toDisplay_tpcaptions_likes=false;
     this.toDisplay_tpcaptions_saved=true;
@@ -667,19 +665,74 @@ export class DashboardComponent implements OnInit{
     this.toDisplay_tpcount_reach=false;
     this.toDisplay_tpcount_saved=true;
     var saved_array:number[] = new Array();
+    var saved_permalink_caption: { saved: number, permalink: string, caption: string } = {
+      saved: 0,
+      permalink: "",
+      caption: ""
+    };
+    var temp: { saved: number, permalink: string, caption: string } = {
+      saved: 0,
+      permalink: "",
+      caption: ""
+    };
+    var permalink_array:string[] = new Array();
+    let i=0,k=0;
+    var spc:Array<object>=[{}];
+    var caption_array:string[] = new Array();
     this.lscs_service.like(this.access_token,this.ig_id).subscribe((response)=>{
       let length=Object.entries(response)[0][1].length;
-      console.log("length from saved=",length);
-      let m=0;
+      //console.log("length from saved=",length);
+      let m=0,a:Array<number>;
       for(m=0;m<length;m++){
-        this.media_id=Object.entries(response)[0][1][m].id;
+      this.media_id=Object.entries(response)[0][1][m].id;
       this.toppost.top2(this.access_token,this.media_id).subscribe((res)=>{
-        console.log("response from saved=",Object.entries(res)[0][1][1].values[0].value);
+        let mid= Object.entries(res)[0][1][0].id.substring(0,17);
+        console.log("mid=",mid);
+        this.toppost.permalink_caption(this.access_token,mid).subscribe((resp)=>{
+        let j=environment.env_var_tp_saved++;
+        //console.log("respone from permalink_Caption=",Object.entries(res));
+         saved_array[j]=Object.entries(res)[0][1][0].values[0].value;
+        //console.log("saved value response=",saved_array[m]);
+        permalink_array[j]=Object.entries(resp)[0][1];
+        caption_array[j]=Object.entries(resp)[1][1];
+        console.log("caption array=",caption_array);
+        console.log("permalink array=",permalink_array);
+        saved_permalink_caption={saved:saved_array[j],permalink:permalink_array[j],caption:caption_array[j]}
+        spc[j]=saved_permalink_caption;
+      for(i=0;i<spc.length;i++){
+        for(k=i+1;k<spc.length;k++){
+          if(Object.entries(spc[i])[0][1]<Object.entries(spc[k])[0][1]){
+            temp={saved:Object.entries(spc[i])[0][1],permalink:Object.entries(spc[i])[1][1],caption:Object.entries(spc[i])[2][1]}
+            spc[i] = {saved:Object.entries(spc[k])[0][1],permalink:Object.entries(spc[k])[1][1],caption:Object.entries(spc[k])[2][1]};  
+            spc[k] = temp; 
+          }
+        }
+      }
+      this.toppost_by_caption0=Object.entries(spc[0])[2][1].substring(0,30);
+      this.toppost_by_caption1=Object.entries(spc[1])[2][1].substring(0,30);
+      this.toppost_by_caption2=Object.entries(spc[2])[2][1].substring(0,30);
+      this.toppost_by_caption3=Object.entries(spc[3])[2][1].substring(0,30);
+      this.toppost_by_caption4=Object.entries(spc[4])[2][1].substring(0,30);
+      this.toppost_by_caption5=Object.entries(spc[5])[2][1].substring(0,30);
+      this.toppost_by_likes0=Object.entries(spc[0])[0][1];
+      this.toppost_by_likes1=Object.entries(spc[1])[0][1];
+      this.toppost_by_likes2=Object.entries(spc[2])[0][1];
+      this.toppost_by_likes3=Object.entries(spc[3])[0][1];
+      this.toppost_by_likes4=Object.entries(spc[4])[0][1];
+      this.toppost_by_likes5=Object.entries(spc[5])[0][1];
+      this.toppost_permalink0=Object.entries(spc[0])[1][1];
+      this.toppost_permalink1=Object.entries(spc[1])[1][1];
+      this.toppost_permalink2=Object.entries(spc[2])[1][1];
+      this.toppost_permalink3=Object.entries(spc[3])[1][1];
+      this.toppost_permalink4=Object.entries(spc[4])[1][1];
+      this.toppost_permalink5=Object.entries(spc[5])[1][1];
+        })
       })
       }
     })
   }
   tp_reach(){
+    environment.env_var_tp_reach=0;
     this.toDisplay_toppost_options=false;
     this.toDisplay_tpcaptions_likes=false;
     this.toDisplay_tpcaptions_saved=false;
@@ -689,7 +742,75 @@ export class DashboardComponent implements OnInit{
     this.toDisplay_tpcount_comments=false;
     this.toDisplay_tpcount_reach=true;
     this.toDisplay_tpcount_saved=false;
-    alert("tp reach working");
+    var reach_array:number[] = new Array();
+    var reach_permalink_caption: { reach: number, permalink: string, caption: string } = {
+      reach: 0,
+      permalink: "",
+      caption: ""
+    };
+    var temp_reach: { reach: number, permalink: string, caption: string } = {
+      reach: 0,
+      permalink: "",
+      caption: ""
+    };
+    var reach_permalink_array:string[] = new Array();
+    let i=0,k=0;
+    var rpc:Array<object>=[{}];
+    var reach_caption_array:string[] = new Array();
+    this.lscs_service.like(this.access_token,this.ig_id).subscribe((response)=>{
+      let length=Object.entries(response)[0][1].length;
+      //console.log("length from saved=",length);
+      let m=0,a:Array<number>;
+      for(m=0;m<length;m++){
+      this.media_id=Object.entries(response)[0][1][m].id;
+      this.toppost.top_reach(this.access_token,this.media_id).subscribe((res)=>{
+        let mid= Object.entries(res)[0][1][0].id.substring(0,17);
+        console.log("mid=",mid);
+        this.toppost.permalink_caption(this.access_token,mid).subscribe((resp)=>{
+        let j=environment.env_var_tp_reach++;
+        //console.log("respone from permalink_Caption=",Object.entries(res));
+         reach_array[j]=Object.entries(res)[0][1][0].values[0].value;
+        //console.log("saved value response=",saved_array[m]);
+        reach_permalink_array[j]=Object.entries(resp)[0][1];
+        reach_caption_array[j]=Object.entries(resp)[1][1];
+        console.log("caption array=",reach_caption_array);
+        console.log("permalink array=",reach_permalink_array);
+        reach_permalink_caption={reach:reach_array[j],permalink:reach_permalink_array[j],caption:reach_caption_array[j]}
+        rpc[j]=reach_permalink_caption;
+      for(i=0;i<rpc.length;i++){
+        for(k=i+1;k<rpc.length;k++){
+          if(rpc[k]===undefined){
+            return;
+          }
+            if(Object.entries(rpc[i])[0][1]<Object.entries(rpc[k])[0][1]){
+              temp_reach={reach:Object.entries(rpc[i])[0][1],permalink:Object.entries(rpc[i])[1][1],caption:Object.entries(rpc[i])[2][1]}
+              rpc[i] = {saved:Object.entries(rpc[k])[0][1],permalink:Object.entries(rpc[k])[1][1],caption:Object.entries(rpc[k])[2][1]};  
+              rpc[k] = temp_reach; 
+            }
+        }
+      }
+      this.toppost_by_caption0=Object.entries(rpc[0])[2][1].substring(0,30);
+      this.toppost_by_caption1=Object.entries(rpc[1])[2][1].substring(0,30);
+      this.toppost_by_caption2=Object.entries(rpc[2])[2][1].substring(0,30);
+      this.toppost_by_caption3=Object.entries(rpc[3])[2][1].substring(0,30);
+      this.toppost_by_caption4=Object.entries(rpc[4])[2][1].substring(0,30);
+      this.toppost_by_caption5=Object.entries(rpc[5])[2][1].substring(0,30);
+      this.toppost_by_likes0=Object.entries(rpc[0])[0][1];
+      this.toppost_by_likes1=Object.entries(rpc[1])[0][1];
+      this.toppost_by_likes2=Object.entries(rpc[2])[0][1];
+      this.toppost_by_likes3=Object.entries(rpc[3])[0][1];
+      this.toppost_by_likes4=Object.entries(rpc[4])[0][1];
+      this.toppost_by_likes5=Object.entries(rpc[5])[0][1];
+      this.toppost_permalink0=Object.entries(rpc[0])[1][1];
+      this.toppost_permalink1=Object.entries(rpc[1])[1][1];
+      this.toppost_permalink2=Object.entries(rpc[2])[1][1];
+      this.toppost_permalink3=Object.entries(rpc[3])[1][1];
+      this.toppost_permalink4=Object.entries(rpc[4])[1][1];
+      this.toppost_permalink5=Object.entries(rpc[5])[1][1];
+        })
+      })
+      }
+    })
   }
   cr(){
     this.lscs_service.like(this.access_token,this.ig_id).subscribe((res)=>{
@@ -1135,7 +1256,7 @@ export class DashboardComponent implements OnInit{
       //console.log("todays date=",date_in_unix);
       let req:any;
       let request ={"id": Object.entries(res)[1][1]}
-      this.http.post('http://localhost:5000/get_following',request).subscribe((resp:any)=>{
+      this.http.post(environment.baseURL+'/get_following',request).subscribe((resp:any)=>{
       console.log("following coming from database",resp)
       this.new_following_week=resp.following_day24+resp.following_day25+resp.following_day26+resp.following_day27+resp.following_day28+resp.following_day29+resp.following_day30;
       this.new_following_month=resp.following_day1+resp.following_day2+resp.following_day3+resp.following_day4+resp.following_day5+resp.following_day6+resp.following_day7+resp.following_day8+resp.following_day9+resp.following_day10+resp.following_day11+resp.following_day12+resp.following_day13+resp.following_day14+resp.following_day15+resp.following_day16+resp.following_day17+resp.following_day18+resp.following_day19+resp.following_day20+resp.following_day21+resp.following_day22+resp.following_day23+resp.following_day24+resp.following_day25+resp.following_day26+resp.following_day27+resp.following_day28+resp.following_day29+resp.following_day30;
@@ -1152,12 +1273,12 @@ export class DashboardComponent implements OnInit{
         this.new_following_pcm=0;
       }
       if(resp.msg==='No data found'){
-        this.http.post('http://localhost:5000/save_following',{"id": Object.entries(res)[1][1], "f_change": 0, "total":Object.entries(res)[0][1]}).subscribe((response:any)=>{
+        this.http.post(environment.baseURL+'/save_following',{"id": Object.entries(res)[1][1], "f_change": 0, "total":Object.entries(res)[0][1]}).subscribe((response:any)=>{
       
       })
       }
       else{
-        this.http.post('http://localhost:5000/save_following',{"id": Object.entries(res)[1][1], "total":Object.entries(res)[0][1], "count": Object.entries(res)[0][1], "f1":resp.following_day1, "f2":resp.following_day2,"f3":resp.following_day3,"f4":resp.following_day4,"f5":resp.following_day5,"f6":resp.following_day6,"f7":resp.following_day7,"f8":resp.following_day8,"f9":resp.following_day9,"f10":resp.following_day10,"f11":resp.following_day11,"f12":resp.following_day12,"f13":resp.following_day13,"f14":resp.following_day14,"f15":resp.following_day15,"f16":resp.following_day16,"f17":resp.following_day17,"f18":resp.following_day18,"f19":resp.following_day19,"f20":resp.following_day20,"f21":resp.following_day21,"f22":resp.following_day22,"f23":resp.following_day23,"f24":resp.following_day24,"f25":resp.following_day25,"f26":resp.following_day26,"f27":resp.following_day27,"f28":resp.following_day28,"f29":resp.following_day29,"f30":resp.following_day30,"f_change":(Object.entries(res)[0][1]-resp.total_following)}).subscribe((response:any)=>{
+        this.http.post(environment.baseURL+'/save_following',{"id": Object.entries(res)[1][1], "total":Object.entries(res)[0][1], "count": Object.entries(res)[0][1], "f1":resp.following_day1, "f2":resp.following_day2,"f3":resp.following_day3,"f4":resp.following_day4,"f5":resp.following_day5,"f6":resp.following_day6,"f7":resp.following_day7,"f8":resp.following_day8,"f9":resp.following_day9,"f10":resp.following_day10,"f11":resp.following_day11,"f12":resp.following_day12,"f13":resp.following_day13,"f14":resp.following_day14,"f15":resp.following_day15,"f16":resp.following_day16,"f17":resp.following_day17,"f18":resp.following_day18,"f19":resp.following_day19,"f20":resp.following_day20,"f21":resp.following_day21,"f22":resp.following_day22,"f23":resp.following_day23,"f24":resp.following_day24,"f25":resp.following_day25,"f26":resp.following_day26,"f27":resp.following_day27,"f28":resp.following_day28,"f29":resp.following_day29,"f30":resp.following_day30,"f_change":(Object.entries(res)[0][1]-resp.total_following)}).subscribe((response:any)=>{
         })
       }
       })
@@ -1167,9 +1288,9 @@ export class DashboardComponent implements OnInit{
       this.total_following.tfollowing(this.access_token,this.ig_id).subscribe((res)=>{
         let request ={"id": Object.entries(res)[1][1]};
         console.log("Request:",request);
-        this.http.post('http://localhost:5000/get_following',request).subscribe((resp:any)=>{
+        this.http.post(environment.baseURL+'/get_following',request).subscribe((resp:any)=>{
         this.new_following_month_pr=resp.following_day1+resp.following_day2+resp.following_day3+resp.following_day4+resp.following_day5+resp.following_day6+resp.following_day7+resp.following_day8+resp.following_day9+resp.following_day10+resp.following_day11+resp.following_day12+resp.following_day13+resp.following_day14+resp.following_day15+resp.following_day16+resp.following_day17+resp.following_day18+resp.following_day19+resp.following_day20+resp.following_day21+resp.following_day22+resp.following_day23+resp.following_day24+resp.following_day25+resp.following_day26+resp.following_day27+resp.following_day28+resp.following_day29+resp.following_day30;
-        this.http.post('http://localhost:5000/save_following_month_p',{"id":request.id,"following_previous_month":this.new_following_month_pr}).subscribe((response:any)=>{
+        this.http.post(environment.baseURL+'/save_following_month_p',{"id":request.id,"following_previous_month":this.new_following_month_pr}).subscribe((response:any)=>{
         if(response.msg==="Following previous month updated Successfully"){
           console.log("Following previous month updated Successfully");
         }

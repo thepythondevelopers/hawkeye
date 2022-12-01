@@ -1,13 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartType } from 'chart.js';
+import { NgToastService } from 'ng-angular-popup';
 import { BaseChartDirective } from 'ng2-charts';
 import { ProfilevisitsService } from '../profilevisits.service';
 
 @Component({
   selector: 'app-profile-visits-calender',
   templateUrl: './profile-visits-calender.component.html',
-  styleUrls: ['./profile-visits-calender.component.css'],
+  styleUrls: ['./profile-visits-calender.component.css','../website-clicks-insights/website-clicks-insights.component.css','../reach-calender/reach-calender.component.css'],
   providers: [DatePipe]
 })
 export class ProfileVisitsCalenderComponent implements OnInit {
@@ -26,7 +27,7 @@ export class ProfileVisitsCalenderComponent implements OnInit {
   pv_p: any;
   pv_percentage_change: any;
   pv: any;
-  constructor(private prfvisits : ProfilevisitsService,private datepipe: DatePipe) {
+  constructor(private toast:NgToastService,private prfvisits : ProfilevisitsService,private datepipe: DatePipe) {
     this.access_token=localStorage.getItem("access_token");
     this.ig_id=localStorage.getItem("ig_id");
    }
@@ -191,11 +192,13 @@ export class ProfileVisitsCalenderComponent implements OnInit {
       this.display_error=true;
       this.display_count=false;
       this.error="future date cannot be selected";
+      this.toast.error({detail:"Failure Message",summary:this.error,duration:5000});
     }
     else{
       this.display_error=true;
       this.display_count=false;
       this.error="Both the fields must be filled";
+      this.toast.error({detail:"Failure Message",summary:this.error,duration:5000});
     }
   }
 }

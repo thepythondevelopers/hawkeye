@@ -1,0 +1,62 @@
+.notfound_img{
+    padding: 50px;
+    padding-top: 0px;
+    padding-bottom: 40px;
+    width: 450px;
+    border-radius: 22px;
+}
+button{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+    text-transform: uppercase;
+    border: none;
+    margin-left: 50px;
+    padding: 6px 30px;
+    gap: 10px;
+    width: 184px;
+    height: 34px;
+    background: linear-gradient(90deg, #613DC1 0%, #858AE3 100%);
+    border-radius: 5px;
+}
+.err_msg{
+    width: 422px;
+    height: 69px;
+    font-family: 'Mulish';
+    font-style: normal;
+    padding-left: 50px;
+    position: relative;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 23px;
+    padding-top: 200px;
+    text-transform: capitalize;
+    color: #555555;
+}
+.notfound_heading{
+    position: absolute;
+    width: 422px;
+    height: 159px;
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 52px;
+    padding-top: 50px;
+    padding-left: 50px;
+    color: #000000;
+}
+.notfound_box{
+    position: absolute;
+    width: 1114px;
+    height: 556px;
+    left: 254.6px;
+    background: #FFFFFF;
+    box-shadow: 1px 2px 23px rgb(70 118 251 / 51%);
+    border-radius: 22px;
+}

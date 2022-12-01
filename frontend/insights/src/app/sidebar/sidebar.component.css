@@ -1,0 +1,30 @@
+.fd-angle-up{
+    margin: -48px 10px 0px 0px;
+    text-align: right;
+    font-size: 15px;
+}
+.fd-angle-down{
+    margin: -48px 10px 0px 0px;
+    text-align: right;
+    font-size: 15px;
+}
+.dashboard_sidebar_icon{
+    position: absolute;
+    top: 10px;
+    left: 22px;
+}
+.dashboard_sidebar_icon2{
+    margin-top: 10px;
+    margin-left: 34px;
+}
+.sidebar{
+position: absolute;
+width: 224px;
+height: 1438px;
+left: 0px;
+top: 0px;
+background: #FFFFFF;
+}
+.dashboard_text{
+    margin-left: -40px;
+}

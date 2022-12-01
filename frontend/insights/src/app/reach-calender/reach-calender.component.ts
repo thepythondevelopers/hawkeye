@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { DashboardService } from '../dashboard.service';
 import { DatePipe } from '@angular/common'
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-reach-calender',
@@ -18,7 +19,7 @@ export class ReachCalenderComponent implements OnInit {
   error:string="";
   display_error:boolean=false;
   display_count:boolean=false;
-  constructor(private dashboardservice: DashboardService,private datepipe: DatePipe) {
+  constructor(private dashboardservice: DashboardService,private datepipe: DatePipe,private toast:NgToastService) {
     this.access_token=localStorage.getItem("access_token");
     this.ig_id=localStorage.getItem("ig_id");
    }
@@ -36,11 +37,13 @@ export class ReachCalenderComponent implements OnInit {
           this.display_error=true;
           this.display_count=false;
           this.error="future date cannot be selected";
+          this.toast.error({detail:"Failure Message",summary:this.error,duration:5000});
         }
         else if(date_unix<(latest_unix-(365*2*24*60*60))){
           this.display_error=true;
           this.display_count=false;
           this.error="Data can be provided up till last 2 years only.";
+          this.toast.error({detail:"Failure Message",summary:this.error,duration:5000});
         }
         else{
           this.display_error=false;
@@ -72,6 +75,7 @@ export class ReachCalenderComponent implements OnInit {
     else{
       this.display_error=true;
       this.error="Filling both the data is neccessary";
+      this.toast.error({detail:"Failure Message",summary:this.error,duration:5000});
     }
   }
 }

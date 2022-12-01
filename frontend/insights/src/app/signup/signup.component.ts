@@ -10,7 +10,7 @@ import { SignupService } from '../signup.service';
 export class SignupComponent implements OnInit {
 
   constructor(private router : Router, private signup : SignupService) { 
-    if(localStorage.getItem("jwt")){
+    if(localStorage.getItem("email")){
       this.router.navigate(['/dashboard']);
     }
   }

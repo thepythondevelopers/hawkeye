@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@abacritt/angularx-social-login": "^1.2.5",
+    "@angular/animations": "^15.0.1",
     "@angular/common": "^14.2.0",
     "@angular/compiler": "^14.2.0",
     "@angular/core": "^14.2.0",
@@ -21,7 +22,11 @@
     "angular5-social-auth2": "^1.0.12",
     "angularx-social-login": "^4.1.0",
     "chart.js": "^3.9.1",
+    "ng-angular-popup": "^0.2.0",
     "ng2-charts": "^4.0.1",
+    "ngx-avatar": "^4.1.0",
+    "ngx-stripe": "^7.4.4",
+    "ngx-toastr": "^16.0.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

@@ -1,13 +1,19 @@
 {
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "dwolla-v2": "^3.4.0",
     "express": "^4.18.2",
     "insta-id-of": "^1.1.15",
     "instagram-private-api": "^1.45.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.5",
-    "nodemon": "^2.0.20"
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.20",
+    "plaid": "^12.1.0",
+    "stripe": "^11.1.0"
   }
 }

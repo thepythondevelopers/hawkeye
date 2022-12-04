@@ -144,7 +144,7 @@ app.post('/login', jsonParser, function (req, res) {
                     })
                     res.status(200).send({"msg":"Login Successfull","jwt":token});
                 })*/
-                 res.status(200).send({"msg":"Login Successfull","jwt":token});
+                 res.status(200).send({"msg":"Login Successfull"});
             }
   
             if (!isMatch) {

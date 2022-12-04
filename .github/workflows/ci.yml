@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: add directory into safe 
         run: git config --global --add safe.directory /var/www/html/hawkeye
-      - name: print
-        run: echo ${{secrets.KEY}} | sed 's/./& /g'
       - name: Taking Git Pull
         run: GIT_SSH_COMMAND='${{secrets.KEY}}' git pull
 

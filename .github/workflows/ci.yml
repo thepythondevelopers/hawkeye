@@ -12,7 +12,9 @@ jobs:
         working-directory: /var/www/html/hawkeye
     steps:
       - name: add directory into safe 
-        run: git config --global --add safe.directory /var/www/html/hawkeye 
+        run: git config --global --add safe.directory /var/www/html/hawkeye
+      - name: print
+        run: echo $KEY
       - name: Taking Git Pull
         run: GIT_SSH_COMMAND='$KEY' git pull
 

@@ -14,7 +14,7 @@ jobs:
       - name: add directory into safe 
         run: git config --global --add safe.directory /var/www/html/hawkeye
       - name: Taking Git Pull
-        run: GIT_SSH_COMMAND=${{secret.KEY}} git pull
+        run: GIT_SSH_COMMAND=${{secrets.KEY}} git pull
 
   Build:
     needs: Git_Pull

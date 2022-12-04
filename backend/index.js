@@ -136,14 +136,15 @@ app.post('/login', jsonParser, function (req, res) {
             // Comparing the original password to
             // encrypted password   
             if (isMatch) {
-                jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
+                /*jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
                     await User.updateOne({email: req.body.email},{
                         $set:{
                             token : token
                         }
                     })
                     res.status(200).send({"msg":"Login Successfull","jwt":token});
-                })
+                })*/
+                 res.status(200).send({"msg":"Login Successfull","jwt":token});
             }
   
             if (!isMatch) {

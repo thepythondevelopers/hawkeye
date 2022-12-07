@@ -132,26 +132,31 @@ app.post('/customer_details', jsonParser, async(req, res)=>{
 app.post('/login', jsonParser, function (req, res) {
     User.findOne({ email: req.body.email }).then((data) => {
         console.log("data",data.password)
-        bcrypt.compare(req.body.password, data.password, 
-            async function (err, isMatch) {
-            // Comparing the original password to
-            // encrypted password   
-            if (isMatch) {
-                /*jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
-                    await User.updateOne({email: req.body.email},{
-                        $set:{
-                            token : token
-                        }
-                    })
-                    res.status(200).send({"msg":"Login Successfull","jwt":token});
-                })*/
-                res.status(200).send({"msg":"Login Successfull"});
-            }
-  
-            if (!isMatch) {
-                res.status(400).send({"msg":"EmailID and Password Does'nt Match"});
-            }
-        })
+        if(data){
+            bcrypt.compare(req.body.password, data.password, 
+                async function (err, isMatch) {
+                // Comparing the original password to
+                // encrypted password   
+                if (isMatch) {
+                    /*jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
+                        await User.updateOne({email: req.body.email},{
+                            $set:{
+                                token : token
+                            }
+                        })
+                        res.status(200).send({"msg":"Login Successfull","jwt":token});
+                    })*/
+                    res.status(200).send({"msg":"Login Successfull"});
+                }
+      
+                if (!isMatch) {
+                    res.status(400).send({"msg":"EmailID and Password Does'nt Match"});
+                }
+            })
+        }
+        else{
+            res.status(200).send({"msg":"Email not registered with us."});
+        }
     })
 })
 app.post('/register', jsonParser, function (req, res) {

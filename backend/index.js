@@ -131,7 +131,7 @@ app.post('/customer_details', jsonParser, async(req, res)=>{
 })
 app.post('/login', jsonParser, function (req, res) {
     User.findOne({ email: req.body.email }).then((data) => {
-        console.log("data",data.password)
+        //console.log("data",data.password)
         if(data){
             bcrypt.compare(req.body.password, data.password, 
                 async function (err, isMatch) {

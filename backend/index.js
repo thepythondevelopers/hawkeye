@@ -47,8 +47,8 @@ app.post('/update_profile_image', upload.single('image'), (req, res, next) => {
                             }
                         }
                     })
+                    res.send({"msg":"Profile image updated Successfull"});
     })
-    res.send({"msg":"Profile image updated Successfull"});
 });
 
 app.post('/create-checkout-session', jsonParser, async (req, res)=> {
@@ -109,15 +109,16 @@ app.post('/set-profile-image',jsonParser,async(req,res)=>{
                     insta_profile_image : req.body.profile_image
                 }
             })
-            console.log("requested profile image=",req.body.profile_image);
+            console.log("requested profile image=",req.body.insta_profile_image);
             res.send({"msg":"image set"});
         }
         else{
             if(data.updated_profile_img!==""){
-                res.send({"profile_image":data.updated_profile_img});
+                console.log({"profile_image_content_type":data.updated_profile_img})
+                res.send({"updated_profile_image":data.updated_profile_img});
             }
             else{
-                res.send({"profile_image":data.profile_image});
+                res.send({"insta_profile_image":data.insta_profile_image});
             }
         }
     })
@@ -136,14 +137,15 @@ app.post('/login', jsonParser, function (req, res) {
             // Comparing the original password to
             // encrypted password   
             if (isMatch) {
-                jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
+                /*jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
                     await User.updateOne({email: req.body.email},{
                         $set:{
                             token : token
                         }
                     })
                     res.status(200).send({"msg":"Login Successfull","jwt":token});
-                })
+                })*/
+                res.status(200).send({"msg":"Login Successfull"});
             }
   
             if (!isMatch) {
@@ -153,7 +155,12 @@ app.post('/login', jsonParser, function (req, res) {
     })
 })
 app.post('/register', jsonParser, function (req, res) {
-    var password = req.body.password;
+    User.findOne({ email: req.body.email }).then((data) => {
+        if(data){
+            res.status(200).send({"msg":"Email already exists"});
+        }
+        else{
+            var password = req.body.password;
     var hashedPassword;
     // Encryption of the string password
     bcrypt.genSalt(10, function (err, Salt) {
@@ -168,7 +175,6 @@ app.post('/register', jsonParser, function (req, res) {
         hashedPassword = hash;
         console.log("hash",hash);
         const data = new User({
-            _id: mongoose.Types.ObjectId(),
             fname: req.body.fname,
             lname: req.body.lname,
             email: req.body.email,
@@ -176,7 +182,7 @@ app.post('/register', jsonParser, function (req, res) {
             token:"0",
             plan:"Null", 
             insta_profile_image:"",
-            updated_profile_img:""
+            updated_profile_img : ""
         })
         data.save().then((result) => {
             console.log("result",result);
@@ -184,6 +190,8 @@ app.post('/register', jsonParser, function (req, res) {
         }).catch((err) => console.log(err));
     })
 })
+        }
+    })
 })
 app.get('/users', verifyToken, function (req, res) {
     User.find().then((result) => {

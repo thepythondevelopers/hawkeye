@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 let userSchema =  new mongoose.Schema({
-    _id:mongoose.Schema.Types.ObjectId,
     fname:String,
     lname:String,
     email:String,
@@ -9,10 +8,6 @@ let userSchema =  new mongoose.Schema({
     token:String,
     plan:String,
     insta_profile_image:String,
-    updated_profile_img:
-    {
-        data: Buffer,
-        contentType: String
-    }
+    updated_profile_img:any=""
 })
 module.exports=mongoose.model('users',userSchema)

@@ -113,24 +113,12 @@ app.post('/get-profile-image',jsonParser,async(req,res)=>{
 })
 app.post('/set-profile-image',jsonParser,async(req,res)=>{
     User.findOne({ email: req.body.email }).then(async (data) => {
-        if(data.updated_profile_img===""){
-            await User.updateOne({email: req.body.email},{
-                $set:{
-                    insta_profile_image : req.body.profile_image
-                }
-            })
-            console.log("requested profile image=",req.body.insta_profile_image);
-            res.send({"msg":"image set"});
-        }
-        else{
-            if(data.updated_profile_img!==""){
-                console.log({"profile_image_content_type":data.updated_profile_img})
-                res.send({"updated_profile_image":data.updated_profile_img});
+        await User.updateOne({email: req.body.email},{
+            $set:{
+                updated_profile_img : req.body.profile_image
             }
-            else{
-                res.send({"insta_profile_image":data.insta_profile_image});
-            }
-        }
+        })
+        res.send({"msg":"image set"});
     })
 })
 app.post('/customer_details', jsonParser, async(req, res)=>{

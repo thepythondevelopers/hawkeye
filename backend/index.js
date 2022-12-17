@@ -35,7 +35,7 @@ var storage = multer.diskStorage({
     }
 });
   
-var upload = multer({ storage: storage });
+var upload = multer({ storage: storage }).single('profileImage');
 
 app.post('/update_profile', upload.single('image'), (req, res, next) => {
     User.findOne({ email: req.body.email }).then(async (data) => {
@@ -171,11 +171,8 @@ app.post('/register', jsonParser, function (req, res) {
         if (err) {
             console.log('Cannot encrypt');
         }
-  
         hashedPassword = hash;
         console.log("hash",hash);
-        var img = fs.readFileSync("C:\Users\RAJ\Downloads");
-        var encode_img = img.toString('base64');
         const data = new User({
             fname: req.body.fname,
             lname: req.body.lname,
@@ -187,7 +184,10 @@ app.post('/register', jsonParser, function (req, res) {
             about_me: "",
             token:"0",
             plan:"Null", 
-            updated_profile_img : {data:Buffer(encode_img,'base64'),contentType: "image/png"}
+            updated_profile_img:{
+                data:req.file.filename,
+                contentType:'image/png'
+            }
         })
         data.save().then((result) => {
             console.log("result",result);

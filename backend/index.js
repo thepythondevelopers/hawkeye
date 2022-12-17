@@ -111,16 +111,6 @@ app.post('/get-profile-image',jsonParser,async(req,res)=>{
         }
     })
 })
-app.post('/set-profile-image',jsonParser,async(req,res)=>{
-    User.findOne({ email: req.body.email }).then(async (data) => {
-        await User.updateOne({email: req.body.email},{
-            $set:{
-                updated_profile_img : req.body.profile_image
-            }
-        })
-        res.send({"updated_profile_image":data.updated_profile_img});
-    })
-})
 app.post('/customer_details', jsonParser, async(req, res)=>{
     const customer = await stripe.customers.retrieve(
         req.body.customer

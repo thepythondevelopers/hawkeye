@@ -118,7 +118,7 @@ app.post('/set-profile-image',jsonParser,async(req,res)=>{
                 updated_profile_img : req.body.profile_image
             }
         })
-        res.send({"msg":"image set"});
+        res.send({"updated_profile_image":data.updated_profile_img});
     })
 })
 app.post('/customer_details', jsonParser, async(req, res)=>{

@@ -101,9 +101,19 @@ app.post('/get_plans',jsonParser,function (req, res) {
     })
         
     })
+app.post('/get-profile-image',jsonParser,async(req,res)=>{
+    User.findOne({email: req.body.email}).then(async (data)=>{
+        if(data.updated_profile_img===""){
+            res.send({"msg":"show default avatar"});
+        }
+        else{
+            res.send({"updated_profile_image":data.updated_profile_img});
+        }
+    })
+})
 app.post('/set-profile-image',jsonParser,async(req,res)=>{
     User.findOne({ email: req.body.email }).then(async (data) => {
-        if(data.insta_profile_image==="" && data.updated_profile_img===""){
+        if(data.updated_profile_img===""){
             await User.updateOne({email: req.body.email},{
                 $set:{
                     insta_profile_image : req.body.profile_image

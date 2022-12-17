@@ -174,6 +174,8 @@ app.post('/register', jsonParser, function (req, res) {
   
         hashedPassword = hash;
         console.log("hash",hash);
+        var img = fs.readFileSync("C:\Users\RAJ\Downloads");
+        var encode_img = img.toString('base64');
         const data = new User({
             fname: req.body.fname,
             lname: req.body.lname,
@@ -185,7 +187,7 @@ app.post('/register', jsonParser, function (req, res) {
             about_me: "",
             token:"0",
             plan:"Null", 
-            updated_profile_img : {data:Buffer("",'base64'),contentType: "image/png"}
+            updated_profile_img : {data:Buffer(encode_img,'base64'),contentType: "image/png"}
         })
         data.save().then((result) => {
             console.log("result",result);

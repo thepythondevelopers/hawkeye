@@ -37,17 +37,23 @@ var storage = multer.diskStorage({
   
 var upload = multer({ storage: storage });
 
-app.post('/update_profile_image', upload.single('image'), (req, res, next) => {
+app.post('/update_profile', upload.single('image'), (req, res, next) => {
     User.findOne({ email: req.body.email }).then(async (data) => {
                     await User.updateOne({email: req.body.email},{
                         $set:{
                             updated_profile_img: {
                                 data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
                                 contentType: 'image/png'
-                            }
+                            },
+                            location: req.body.location,
+                            occupation: req.body.occupation,
+                            fname:req.body.first_name,
+                            lname:req.body.last_name,
+                            about_me:req.body.about_me,
+                            website:req.body.website
                         }
                     })
-                    res.send({"msg":"Profile image updated Successfull"});
+                    res.send({"msg":"Profile updated Successfull"});
     })
 });
 

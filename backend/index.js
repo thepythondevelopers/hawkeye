@@ -172,9 +172,12 @@ app.post('/register', jsonParser, function (req, res) {
             lname: req.body.lname,
             email: req.body.email,
             password: hashedPassword,
+            city: "",
+            country: "",
+            website: "",
+            about_me: "",
             token:"0",
             plan:"Null", 
-            insta_profile_image:"",
             updated_profile_img : ""
         })
         data.save().then((result) => {

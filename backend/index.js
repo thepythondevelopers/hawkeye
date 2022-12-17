@@ -159,6 +159,7 @@ app.post('/register', jsonParser, function (req, res) {
             res.status(200).send({"msg":"Email already exists"});
         }
         else{
+            
             var password = req.body.password;
     var hashedPassword;
     // Encryption of the string password
@@ -184,7 +185,7 @@ app.post('/register', jsonParser, function (req, res) {
             about_me: "",
             token:"0",
             plan:"Null", 
-            updated_profile_img : ""
+            updated_profile_img : {data:Buffer("",'base64'),contentType: "image/png"}
         })
         data.save().then((result) => {
             console.log("result",result);

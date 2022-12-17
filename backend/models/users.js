@@ -11,7 +11,6 @@ let userSchema =  new mongoose.Schema({
     about_me:String,
     token:String,
     plan:String,
-    insta_profile_image:String,
-    updated_profile_img:any=""
+    updated_profile_img:{data:Buffer,contentType: String}
 })
 module.exports=mongoose.model('users',userSchema)

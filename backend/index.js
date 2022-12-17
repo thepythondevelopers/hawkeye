@@ -184,10 +184,6 @@ app.post('/register', jsonParser, function (req, res) {
             about_me: "",
             token:"0",
             plan:"Null", 
-            updated_profile_img:{
-                data:req.file.filename,
-                contentType:'image/png'
-            }
         })
         data.save().then((result) => {
             console.log("result",result);

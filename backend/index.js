@@ -24,36 +24,53 @@ mongoose.connect(process.env.connecting_string, {
     console.log("connected");
 })
 
-var multer = require('multer');
+const multer = require('multer');
+const { json } = require('express');
   
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads')
     },
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now())
+        cb(null, Date.now()+path.extname(file.originalname))
+        console.log("orignal name=",file.originalname)
     }
 });
   
-var upload = multer({ storage: storage }).single('profileImage');
-
-app.post('/update_profile', upload.single('image'), (req, res, next) => {
+var upload = multer({ storage: storage });
+app.post('/user_details',jsonParser,(req,res)=>{
+    User.findOne({email:req.body.email}).then(async (data)=>{
+        res.send({"user_details":data})
+    })
+})
+app.post('/update_profile_image',jsonParser,upload.single('image'),(req,res,next)=>{
+    User.findOne({ email: req.body.email }).then(async (data) => {
+        await User.updateOne({email: req.body.email},{
+            $set:{
+                updated_profile_img: {
+                    data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+                    contentType: 'image/png'
+                },
+            }
+        })
+        res.send({"msg":"Profile image updated Successfull"});
+    })
+})
+app.post('/update_profile',jsonParser, (req, res, next) => {
+    console.log("file name=",req.body.email);
     User.findOne({ email: req.body.email }).then(async (data) => {
                     await User.updateOne({email: req.body.email},{
                         $set:{
-                            updated_profile_img: {
-                                data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-                                contentType: 'image/png'
-                            },
                             location: req.body.location,
                             occupation: req.body.occupation,
                             fname:req.body.first_name,
                             lname:req.body.last_name,
                             about_me:req.body.about_me,
-                            website:req.body.website
+                            website:req.body.website,
+                            
                         }
                     })
-                    res.send({"msg":"Profile updated Successfull"});
+                    res.send({"msg":"Profile updated Successfull","email":req.body.email});
     })
 });
 
@@ -184,6 +201,10 @@ app.post('/register', jsonParser, function (req, res) {
             about_me: "",
             token:"0",
             plan:"Null", 
+            updated_profile_img: {
+                data: fs.readFileSync(path.join(__dirname + '/uploads/' + "default_avatar.jpg")),
+                contentType: 'image/png'
+            },
         })
         data.save().then((result) => {
             console.log("result",result);

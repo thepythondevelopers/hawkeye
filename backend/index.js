@@ -215,6 +215,12 @@ app.post('/register', jsonParser, function (req, res) {
         }
     })
 })
+app.post('/user_current_plan',jsonParser,(req,res)=>{
+    User.findOne({email:req.body.email}).then(async (data)=>{
+        console.log("data=",data);
+        res.send({"user_current_plan":data})
+    })
+})
 app.get('/users', verifyToken, function (req, res) {
     User.find().then((result) => {
         res.status(200).json(result);

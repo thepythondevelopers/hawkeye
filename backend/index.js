@@ -8,6 +8,7 @@ app.use(cors());
 app.use(express.static('public'));
 const mongoose = require('mongoose');
 const User = require('./models/users');
+const Insta_accounts = require('./models/insta_accounts');
 const Following = require('./models/following');
 var fs = require('fs');
 var path = require('path');
@@ -214,6 +215,96 @@ app.post('/register', jsonParser, function (req, res) {
 })
         }
     })
+})
+app.post('/get_insta_accounts',jsonParser,(req,res)=>{
+    Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
+        res.send({"data from get insta accounts":data});
+    })
+})
+app.post('/fill_insta_accounts',jsonParser,(req,res)=>{
+    Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
+        if(req.body.sno===1){
+            console.log("runing1")
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    ig_id_1:req.body.ig_id,
+                    access_token_1:req.body.access_token,
+                }
+            })
+        }
+        else if(req.body.sno===2){
+            console.log("runing2")
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    ig_id_2:req.body.ig_id,
+                    access_token_2:req.body.access_token,
+                }
+            })
+        }
+        else if(req.body.sno===3){
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    ig_id_3:req.body.ig_id,
+                    access_token_3:req.body.access_token,
+                }
+            })
+        }
+        else if(req.body.sno===4){
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    ig_id_4:req.body.ig_id,
+                    access_token_4:req.body.access_token,
+                }
+            })
+        }
+        else if(req.body.sno===5){
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    ig_id_5:req.body.ig_id,
+                    access_token_5:req.body.access_token,
+                }
+            })
+        }
+        res.send({"msg":"Successfully filled insta accounts"})
+    })
+})
+app.post('/space_for_insta_accounts',jsonParser,(req,res)=>{
+        Insta_accounts.findOne({email:req.body.email}).then((data1)=>{
+            if(data1){
+                res.send({"msg":"Insta Accounts allocation already created"});
+            }
+            else{
+                User.findOne({ email: req.body.email }).then((data) => {
+                    if(data){
+                        const data = new Insta_accounts({
+                            email:req.body.email,
+                            account_1:"Account 1",
+                            ig_id_1:"",
+                            access_token_1:"",
+                            account_2:"Account 2",
+                            ig_id_2:"",
+                            access_token_2:"",
+                            account_3:"Account 3",
+                            ig_id_3:"",
+                            access_token_3:"",
+                            account_4:"Account 4",
+                            ig_id_4:"",
+                            access_token_4:"",
+                            account_5:"Account 5",
+                            ig_id_5:"",
+                            access_token_5:""
+                    })
+                    data.save().then((result) => {
+                        console.log("result",result);
+                            res.status(201).send({"msg":"insta accounts allottion created successfully"});
+                    }).catch((err) => console.log(err));
+                    }
+                    else{
+                        res.send({"msg":"No such email id exists with hawkeye"});
+                    }
+                })
+            }
+        })
 })
 app.post('/user_current_plan',jsonParser,(req,res)=>{
     User.findOne({email:req.body.email}).then(async (data)=>{
@@ -463,6 +554,59 @@ app.post('/save_following_month_p', jsonParser,async (req,res)=>{
         }
     })
 })
+app.post('/edit_name',jsonParser,async (req,res)=>{
+    if(req.body.edit_for==="account_1"){
+        Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    account_1: req.body.name
+                }
+            })
+            res.send({"msg":"name updated successfully"});
+        })
+    }
+    if(req.body.edit_for==="account_2"){
+        Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    account_2: req.body.name
+                }
+            })
+            res.send({"msg":"name updated successfully"});
+        })
+    }
+    if(req.body.edit_for==="account_3"){
+        Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    account_3: req.body.name
+                }
+            })
+            res.send({"msg":"name updated successfully"});
+        })
+    }
+    if(req.body.edit_for==="account_4"){
+        Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    account_4: req.body.name
+                }
+            })
+            res.send({"msg":"name updated successfully"});
+        })
+    }
+    if(req.body.edit_for==="account_5"){
+        Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
+            await Insta_accounts.updateOne({email: req.body.email},{
+                $set:{
+                    account_5: req.body.name
+                }
+            })
+        })
+        res.send({"msg":"name updated successfully"});
+    }
+})
+
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {

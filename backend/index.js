@@ -87,6 +87,21 @@ app.post('/create-checkout-session', jsonParser, async (req, res)=> {
     console.log("session",session);
     res.send(session);
 })
+
+app.post('/list_subscription', jsonParser,async(req,res)=>{
+    let stripeSub = await stripe.subscriptions.list({customer: req.body.ci});
+    res.send(stripeSub);
+})
+
+app.post('/save_subscription_id',jsonParser,async(req,res)=>{
+    await User.updateOne({email: req.body.email},{
+        $set:{
+            sub_id : req.body.sub_id
+        }
+    })
+    res.send({"msg":"subscription id saved successfully"});
+})
+
 app.get('/payment_lists',async(req,res)=>{
     const paymentIntents = await stripe.paymentIntents.list({
       });
@@ -119,6 +134,19 @@ app.post('/save_subscription', jsonParser, async(req, res)=>{
     })
     res.send({"suscription":"success"});
 })
+
+app.post('/cancel_subscription',jsonParser,async(req,res)=>{
+    User.findOne({ email: req.body.email }).then(async (data) => {
+        await User.updateOne({email: req.body.email},{
+            $set:{
+                plan:"Null",
+                sub_id:""
+            }
+        })
+        res.send({"msg":"Subscription cancelled successfully"});
+    })
+})
+
 app.post('/get_plans',jsonParser,function (req, res) {
     User.findOne({ email: req.body.email }).then((data) => {
         res.send({"plan":data.plan})
@@ -202,6 +230,7 @@ app.post('/register', jsonParser, function (req, res) {
             about_me: "",
             token:"0",
             plan:"Null", 
+            sub_id:"",
             updated_profile_img: {
                 data: fs.readFileSync(path.join(__dirname + '/uploads/' + "default_avatar.jpg")),
                 contentType: 'image/png'

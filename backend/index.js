@@ -88,6 +88,25 @@ app.post('/create-checkout-session', jsonParser, async (req, res)=> {
     res.send(session);
 })
 
+app.post('/get_cust_id',jsonParser,async(req,res)=>{
+    User.findOne({ email: req.body.email }).then(async (data) => {
+        console.log("get customer id::",data);
+        res.send({"msg":"Subscription cancelled successfully"});
+    })
+})
+
+app.post('/save_cust_id',jsonParser,async(req,res)=>{
+    User.findOne({ email: req.body.email }).then(async (data) => {
+        if(data){
+            await User.updateOne({email: req.body.email},{
+                $set:{
+                    cust_id : req.body.ci
+                }
+            })
+        }
+    })
+})
+
 app.post('/list_subscription', jsonParser,async(req,res)=>{
     let stripeSub = await stripe.subscriptions.list({customer: req.body.ci});
     res.send(stripeSub);
@@ -149,7 +168,12 @@ app.post('/cancel_subscription',jsonParser,async(req,res)=>{
 
 app.post('/get_plans',jsonParser,function (req, res) {
     User.findOne({ email: req.body.email }).then((data) => {
-        res.send({"plan":data.plan})
+        if(data){
+            res.send({"plan":data.plan})
+        }
+        if(!data){
+            res.send({"msg":"No such email exists with hawkeye"});
+        }
     })
         
     })
@@ -231,6 +255,7 @@ app.post('/register', jsonParser, function (req, res) {
             token:"0",
             plan:"Null", 
             sub_id:"",
+            cust_id:"",
             updated_profile_img: {
                 data: fs.readFileSync(path.join(__dirname + '/uploads/' + "default_avatar.jpg")),
                 contentType: 'image/png'

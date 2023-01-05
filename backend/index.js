@@ -5,9 +5,11 @@ const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const app = express();
 app.use(cors());
+var nodemailer = require('nodemailer');
 app.use(express.static('public'));
 const mongoose = require('mongoose');
 const User = require('./models/users');
+const Otp = require('./models/otp');
 const Insta_accounts = require('./models/insta_accounts');
 const Following = require('./models/following');
 var fs = require('fs');
@@ -23,6 +25,61 @@ mongoose.connect(process.env.connecting_string, {
     useUnifiedTopology: true
 }).then(() => {
     console.log("connected");
+})
+
+
+app.post('/send_email',jsonParser,(req,res)=>{
+    if(req.body.sub==="purchased"){
+        var transporter = nodemailer.createTransport({
+            service:'gmail',
+            auth:{
+                user:'qa.pamsar@gmail.com',
+                pass:'tsjfvhxxgsibzayh'
+            }
+        })
+        var mailOptions = {
+            from: 'qa.pamsar@gmail.com',
+            to: req.body.email,
+            subject: 'Payment made in Hawkeye',
+            text: `Made a payment of $19 in Hawkeye and purchased the freelancer plan`
+        }
+        transporter.sendMail(mailOptions, function(error,info){
+            if(error){
+                console.log(error);
+                res.send({'msg':'Email Sent Unsuccessfully'});
+            }
+            else{
+                console.log('Email sent: '+info.response);
+                res.send({'msg':'Email Sent Successfully'});
+            }
+        })
+    }
+    else{
+        var transporter = nodemailer.createTransport({
+            service:'gmail',
+            auth:{
+                user:'qa.pamsar@gmail.com',
+                pass:'tsjfvhxxgsibzayh'
+            }
+        })
+        var mailOptions = {
+            from: 'qa.pamsar@gmail.com',
+            to: req.body.email,
+            subject: 'Payment made in Hawkeye',
+            text: `You have cancelled your subscription plan successfully on Hawkeye`
+        }
+        transporter.sendMail(mailOptions, function(error,info){
+            if(error){
+                console.log(error);
+                res.send({'msg':'Email Sent Unsuccessfully'});
+            }
+            else{
+                console.log('Email sent: '+info.response);
+                res.send({'msg':'Email Sent Successfully'});
+            }
+        })
+    }
+    
 })
 
 const multer = require('multer');
@@ -74,6 +131,124 @@ app.post('/update_profile',jsonParser, (req, res, next) => {
                     res.send({"msg":"Profile updated Successfull","email":req.body.email});
     })
 });
+
+app.post('/create_otp_collection',jsonParser,async(req,res)=>{
+    Otp.findOne({ email: req.body.email }).then(async (data) => {
+        if(data){
+            res.send({"msg":"new otp collection cannot be created because this email already exists in the collection"})
+        }
+        else{
+            const create_otp_collection = new Otp({
+                email: req.body.email,
+                otp: "",
+            })
+            create_otp_collection.save().then((result) => {
+                console.log("result",result);
+                    res.status(201).send({"msg":"Otp Collection Created successfully"});
+            }).catch((err) => console.log(err));
+        }
+    })
+})
+
+app.post('/send_update_otp',jsonParser,async(req,res)=>{
+    Otp.findOne({ email: req.body.email }).then(async (data) => {
+        if(data){
+            var transporter = nodemailer.createTransport({
+                service:'gmail',
+                auth:{
+                    user:'qa.pamsar@gmail.com',
+                    pass:'tsjfvhxxgsibzayh'
+                }
+            })
+            var mailOptions = {
+                from: 'qa.pamsar@gmail.com',
+                to: req.body.email,
+                subject: 'OTP for Hawkeye',
+                text: `This is the otp to change your password `+req.body.otp+` the otp will expire after 1 minute`
+            }
+            transporter.sendMail(mailOptions, function(error,info){
+                if(error){
+                    console.log(error);
+                    res.send({'msg':'Email Sent Unsuccessfully'});
+                }
+                else{
+                    console.log('Email sent: '+info.response);
+                    res.send({'msg':'Email Sent Successfully'});
+                }
+            })
+            await Otp.updateOne({email: req.body.email},{
+                $set:{
+                    otp : req.body.otp
+                }
+            })
+        }
+        else{
+            res.send({"msg":"No such email id exists with us."});
+        }
+    })
+})
+
+app.post('/expire_otp',jsonParser,async (req,res)=>{
+    Otp.findOne({ email: req.body.email }).then(async (data) => {
+        if(data){
+            await Otp.updateOne({email: req.body.email},{
+                $set:{
+                    otp : ""
+                }
+            })
+        }
+        else{
+            res.send({"msg":"No such email id exists with us."});
+        }
+    })
+})
+
+app.post('/new_password',jsonParser,async(req,res)=>{
+    User.findOne({ email: req.body.email }).then((data) => {
+        if(data){
+            var password = req.body.password;
+    var hashedPassword;
+    // Encryption of the string password
+    bcrypt.genSalt(10, function (err, Salt) {
+  
+    // The bcrypt is used for encrypting password.
+    bcrypt.hash(password, Salt, async function (err, hash) {
+  
+        if (err) {
+            console.log('Cannot encrypt');
+        }
+        hashedPassword = hash;
+        console.log("hash",hash);
+        await User.updateOne({email: req.body.email},{
+            $set:{
+                password : hashedPassword
+            }
+        })
+        res.send({"msg":"Password changed successfully"});
+    })
+})
+        }
+        else{
+            res.status(200).send({"msg":"No such Email exists with us"});
+        }
+    })
+})
+
+app.post('/get_otp',jsonParser, async (req,res)=>{
+    Otp.findOne({ email: req.body.email }).then(async (data) => {
+        if(data){
+            if(data.otp===""){
+                res.send({"msg":"OTP expired"})
+            }
+            else{
+                res.send({"msg":data.otp})
+            }
+        }
+        else{
+            res.send({"msg":"No such email id exists with us."})
+        }
+    })
+})
 
 app.post('/create-checkout-session', jsonParser, async (req, res)=> {
     const session = await stripe.checkout.sessions.create({

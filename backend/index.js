@@ -20,6 +20,8 @@ const { rmSync } = require('fs');
 var imgModel = require('./models/users');
 const jwtKey = "jwt";
 var jsonParser = bodyParser.json();
+var validator = require("email-validator");
+
 mongoose.connect(process.env.connecting_string, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -151,41 +153,47 @@ app.post('/create_otp_collection',jsonParser,async(req,res)=>{
 })
 
 app.post('/send_update_otp',jsonParser,async(req,res)=>{
-    Otp.findOne({ email: req.body.email }).then(async (data) => {
-        if(data){
-            var transporter = nodemailer.createTransport({
-                service:'gmail',
-                auth:{
-                    user:'qa.pamsar@gmail.com',
-                    pass:'tsjfvhxxgsibzayh'
+    let check_email=validator.validate(req.body.email);
+    if(check_email===true){
+        Otp.findOne({ email: req.body.email }).then(async (data) => {
+            if(data){
+                var transporter = nodemailer.createTransport({
+                    service:'gmail',
+                    auth:{
+                        user:'qa.pamsar@gmail.com',
+                        pass:'tsjfvhxxgsibzayh'
+                    }
+                })
+                var mailOptions = {
+                    from: 'qa.pamsar@gmail.com',
+                    to: req.body.email,
+                    subject: 'OTP for Hawkeye',
+                    text: `This is the otp to change your password `+req.body.otp+` the otp will expire after 1 minute`
                 }
-            })
-            var mailOptions = {
-                from: 'qa.pamsar@gmail.com',
-                to: req.body.email,
-                subject: 'OTP for Hawkeye',
-                text: `This is the otp to change your password `+req.body.otp+` the otp will expire after 1 minute`
+                transporter.sendMail(mailOptions, function(error,info){
+                    if(error){
+                        console.log(error);
+                        res.send({'msg':'Email Sent Unsuccessfully'});
+                    }
+                    else{
+                        console.log('Email sent: '+info.response);
+                        res.send({'msg':'Email Sent Successfully'});
+                    }
+                })
+                await Otp.updateOne({email: req.body.email},{
+                    $set:{
+                        otp : req.body.otp
+                    }
+                })
             }
-            transporter.sendMail(mailOptions, function(error,info){
-                if(error){
-                    console.log(error);
-                    res.send({'msg':'Email Sent Unsuccessfully'});
-                }
-                else{
-                    console.log('Email sent: '+info.response);
-                    res.send({'msg':'Email Sent Successfully'});
-                }
-            })
-            await Otp.updateOne({email: req.body.email},{
-                $set:{
-                    otp : req.body.otp
-                }
-            })
-        }
-        else{
-            res.send({"msg":"No such email id exists with us."});
-        }
-    })
+            else{
+                res.send({"msg":"No such email id exists with us."});
+            }
+        })
+    }
+    else{
+        res.send({error:"Invalid email"});
+    }
 })
 
 app.post('/expire_otp',jsonParser,async (req,res)=>{
@@ -329,14 +337,37 @@ app.post('/save_subscription', jsonParser, async(req, res)=>{
     res.send({"suscription":"success"});
 })
 
+app.post('/check_allocation',jsonParser,async(req,res)=>{
+    User.findOne({email:req.body.email}).then(async (data)=>{
+        if(data){
+            res.send({msg:'allocation present'})
+        }
+        else{
+            res.send({msg:'No allocation is there'})
+        }
+    })
+})
+
 app.post('/cancel_subscription',jsonParser,async(req,res)=>{
     User.findOne({ email: req.body.email }).then(async (data) => {
+        console.log("subscription id::",data.sub_id);
+        const deleted = await stripe.subscriptions.del(
+            data.sub_id
+        );
         await User.updateOne({email: req.body.email},{
             $set:{
                 plan:"Null",
                 sub_id:""
             }
         })
+        Insta_accounts.findOneAndDelete({email:req.body.email }, function (err, docs) {
+            if (err){
+                console.log(err)
+            }
+            else{
+                console.log("Deleted User : ", docs);
+            }
+        });
         res.send({"msg":"Subscription cancelled successfully"});
     })
 })
@@ -399,51 +430,57 @@ app.post('/login', jsonParser, function (req, res) {
     })
 })
 app.post('/register', jsonParser, function (req, res) {
-    User.findOne({ email: req.body.email }).then((data) => {
-        if(data){
-            res.status(200).send({"msg":"Email already exists"});
-        }
-        else{
-            
-            var password = req.body.password;
-    var hashedPassword;
-    // Encryption of the string password
-    bcrypt.genSalt(10, function (err, Salt) {
-  
-    // The bcrypt is used for encrypting password.
-    bcrypt.hash(password, Salt, function (err, hash) {
-  
-        if (err) {
-            console.log('Cannot encrypt');
-        }
-        hashedPassword = hash;
-        console.log("hash",hash);
-        const data = new User({
-            fname: req.body.fname,
-            lname: req.body.lname,
-            email: req.body.email,
-            password: hashedPassword,
-            location: "",
-            occupation: "",
-            website: "",
-            about_me: "",
-            token:"0",
-            plan:"Null", 
-            sub_id:"",
-            cust_id:"",
-            updated_profile_img: {
-                data: fs.readFileSync(path.join(__dirname + '/uploads/' + "default_avatar.jpg")),
-                contentType: 'image/png'
-            },
+    let check_email=validator.validate(req.body.email);
+    if(check_email===true){
+        User.findOne({ email: req.body.email }).then((data) => {
+            if(data){
+                res.status(200).send({"msg":"Email already exists"});
+            }
+            else{
+                
+                var password = req.body.password;
+        var hashedPassword;
+        // Encryption of the string password
+        bcrypt.genSalt(10, function (err, Salt) {
+      
+        // The bcrypt is used for encrypting password.
+        bcrypt.hash(password, Salt, function (err, hash) {
+      
+            if (err) {
+                console.log('Cannot encrypt');
+            }
+            hashedPassword = hash;
+            console.log("hash",hash);
+            const data = new User({
+                fname: req.body.fname,
+                lname: req.body.lname,
+                email: req.body.email,
+                password: hashedPassword,
+                location: "",
+                occupation: "",
+                website: "",
+                about_me: "",
+                token:"0",
+                plan:"Null", 
+                sub_id:"",
+                cust_id:"",
+                updated_profile_img: {
+                    data: fs.readFileSync(path.join(__dirname + '/uploads/' + "default_avatar.jpg")),
+                    contentType: 'image/png'
+                },
+            })
+            data.save().then((result) => {
+                console.log("result",result);
+                    res.status(201).send({"msg":"registration successfull"});
+            }).catch((err) => console.log(err));
         })
-        data.save().then((result) => {
-            console.log("result",result);
-                res.status(201).send({"msg":"registration successfull"});
-        }).catch((err) => console.log(err));
     })
-})
-        }
-    })
+            }
+        })
+    }
+    else{
+        res.send({error:"Invalid email"});
+    }
 })
 app.post('/get_insta_accounts',jsonParser,(req,res)=>{
     Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{

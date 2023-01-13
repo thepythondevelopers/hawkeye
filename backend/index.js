@@ -491,45 +491,245 @@ app.post('/fill_insta_accounts',jsonParser,(req,res)=>{
     Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
         if(req.body.sno===1){
             console.log("runing1")
-            await Insta_accounts.updateOne({email: req.body.email},{
-                $set:{
-                    ig_id_1:req.body.ig_id,
-                    access_token_1:req.body.access_token,
-                }
-            })
+            if(data.ig_id_1===""){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        ig_id_1:req.body.ig_id,
+                        access_token_1:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_1===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_1:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_2===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_2:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_3===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_3:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_4===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_4:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_5===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_5:req.body.access_token,
+                    }
+                })
+            }
+            else{
+                res.send({"msg":"Trying to connect a sixth account"})
+            }
         }
         else if(req.body.sno===2){
             console.log("runing2")
-            await Insta_accounts.updateOne({email: req.body.email},{
-                $set:{
-                    ig_id_2:req.body.ig_id,
-                    access_token_2:req.body.access_token,
-                }
-            })
+            if(data.ig_id_2===""){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        ig_id_2:req.body.ig_id,
+                        access_token_2:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_1===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_1:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_2===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_2:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_3===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_3:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_4===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_4:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_5===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_5:req.body.access_token,
+                    }
+                })
+            }
+            else{
+                res.send({"msg":"Trying to connect a sixth account"})
+            }
         }
         else if(req.body.sno===3){
-            await Insta_accounts.updateOne({email: req.body.email},{
-                $set:{
-                    ig_id_3:req.body.ig_id,
-                    access_token_3:req.body.access_token,
-                }
-            })
+            if(data.ig_id_3===""){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        ig_id_3:req.body.ig_id,
+                        access_token_3:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_1===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_1:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_2===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_2:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_3===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_3:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_4===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_4:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_5===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_5:req.body.access_token,
+                    }
+                })
+            }
+            else{
+                res.send({"msg":"Trying to connect a sixth account"})
+            }
         }
         else if(req.body.sno===4){
-            await Insta_accounts.updateOne({email: req.body.email},{
-                $set:{
-                    ig_id_4:req.body.ig_id,
-                    access_token_4:req.body.access_token,
-                }
-            })
+            if(data.ig_id_4===""){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        ig_id_4:req.body.ig_id,
+                        access_token_4:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_1===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_1:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_2===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_2:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_3===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_3:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_4===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_4:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_5===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_5:req.body.access_token,
+                    }
+                })
+            }
+            else{
+                res.send({"msg":"Trying to connect a sixth account"})
+            }
         }
         else if(req.body.sno===5){
-            await Insta_accounts.updateOne({email: req.body.email},{
-                $set:{
-                    ig_id_5:req.body.ig_id,
-                    access_token_5:req.body.access_token,
-                }
-            })
+            if(data.ig_id_5===""){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        ig_id_5:req.body.ig_id,
+                        access_token_5:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_1===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_1:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_2===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_2:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_3===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_3:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_4===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_4:req.body.access_token,
+                    }
+                })
+            }
+            else if(data.ig_id_5===req.body.ig_id){
+                await Insta_accounts.updateOne({email: req.body.email},{
+                    $set:{
+                        access_token_5:req.body.access_token,
+                    }
+                })
+            }
+            else{
+                res.send({"msg":"Trying to connect a sixth account"})
+            }
         }
         res.send({"msg":"Successfully filled insta accounts"})
     })
@@ -544,19 +744,14 @@ app.post('/space_for_insta_accounts',jsonParser,(req,res)=>{
                     if(data){
                         const data = new Insta_accounts({
                             email:req.body.email,
-                            account_1:"Account 1",
                             ig_id_1:"",
                             access_token_1:"",
-                            account_2:"Account 2",
                             ig_id_2:"",
                             access_token_2:"",
-                            account_3:"Account 3",
                             ig_id_3:"",
                             access_token_3:"",
-                            account_4:"Account 4",
                             ig_id_4:"",
                             access_token_4:"",
-                            account_5:"Account 5",
                             ig_id_5:"",
                             access_token_5:""
                     })

@@ -489,249 +489,109 @@ app.post('/get_insta_accounts',jsonParser,(req,res)=>{
 })
 app.post('/fill_insta_accounts',jsonParser,(req,res)=>{
     Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
-        if(req.body.sno===1){
-            console.log("runing1")
+
+        if(data){
+            console.log("data from database::",data)
             if(data.ig_id_1===""){
+                console.log("updated ig id 1e")
                 await Insta_accounts.updateOne({email: req.body.email},{
                     $set:{
                         ig_id_1:req.body.ig_id,
                         access_token_1:req.body.access_token,
                     }
                 })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
             else if(data.ig_id_1===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
+                console.log("updated ig id 1")
+                await Insta_accounts.updateOne({email: req.body.email,ig_id_1:req.body.ig_id},{
                     $set:{
                         access_token_1:req.body.access_token,
                     }
                 })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
-            else if(data.ig_id_2===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_2:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_3===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_3:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_4===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_4:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_5===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_5:req.body.access_token,
-                    }
-                })
-            }
-            else{
-                res.send({"msg":"Trying to connect a sixth account"})
-            }
-        }
-        else if(req.body.sno===2){
-            console.log("runing2")
-            if(data.ig_id_2===""){
+            else if(data.ig_id_2===""){
+                console.log("updated ig id 2e")
                 await Insta_accounts.updateOne({email: req.body.email},{
                     $set:{
                         ig_id_2:req.body.ig_id,
                         access_token_2:req.body.access_token,
                     }
                 })
-            }
-            else if(data.ig_id_1===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_1:req.body.access_token,
-                    }
-                })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
             else if(data.ig_id_2===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
+                console.log("updated ig id 2")
+                await Insta_accounts.updateOne({email: req.body.email,ig_id_2:req.body.ig_id},{
                     $set:{
                         access_token_2:req.body.access_token,
                     }
                 })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
-            else if(data.ig_id_3===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_3:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_4===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_4:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_5===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_5:req.body.access_token,
-                    }
-                })
-            }
-            else{
-                res.send({"msg":"Trying to connect a sixth account"})
-            }
-        }
-        else if(req.body.sno===3){
-            if(data.ig_id_3===""){
+            else if(data.ig_id_3===""){
+                console.log("updated ig id 3e")
                 await Insta_accounts.updateOne({email: req.body.email},{
                     $set:{
                         ig_id_3:req.body.ig_id,
                         access_token_3:req.body.access_token,
                     }
                 })
-            }
-            else if(data.ig_id_1===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_1:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_2===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_2:req.body.access_token,
-                    }
-                })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
             else if(data.ig_id_3===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
+                console.log("updated ig id 3")
+                await Insta_accounts.updateOne({email: req.body.email,ig_id_3:req.body.ig_id},{
                     $set:{
                         access_token_3:req.body.access_token,
                     }
                 })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
-            else if(data.ig_id_4===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_4:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_5===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_5:req.body.access_token,
-                    }
-                })
-            }
-            else{
-                res.send({"msg":"Trying to connect a sixth account"})
-            }
-        }
-        else if(req.body.sno===4){
-            if(data.ig_id_4===""){
+            else if(data.ig_id_4!==""){
+                console.log("updated ig id 4e")
                 await Insta_accounts.updateOne({email: req.body.email},{
                     $set:{
                         ig_id_4:req.body.ig_id,
                         access_token_4:req.body.access_token,
                     }
                 })
-            }
-            else if(data.ig_id_1===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_1:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_2===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_2:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_3===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_3:req.body.access_token,
-                    }
-                })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
             else if(data.ig_id_4===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
+                console.log("updated ig id 4")
+                await Insta_accounts.updateOne({email: req.body.email,ig_id_4:req.body.ig_id},{
                     $set:{
                         access_token_4:req.body.access_token,
                     }
                 })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
-            else if(data.ig_id_5===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_5:req.body.access_token,
-                    }
-                })
-            }
-            else{
-                res.send({"msg":"Trying to connect a sixth account"})
-            }
-        }
-        else if(req.body.sno===5){
-            if(data.ig_id_5===""){
+            else if(data.ig_id_5===""){
+                console.log("updated ig id 5e")
                 await Insta_accounts.updateOne({email: req.body.email},{
                     $set:{
                         ig_id_5:req.body.ig_id,
                         access_token_5:req.body.access_token,
                     }
                 })
-            }
-            else if(data.ig_id_1===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_1:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_2===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_2:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_3===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_3:req.body.access_token,
-                    }
-                })
-            }
-            else if(data.ig_id_4===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
-                    $set:{
-                        access_token_4:req.body.access_token,
-                    }
-                })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
             else if(data.ig_id_5===req.body.ig_id){
-                await Insta_accounts.updateOne({email: req.body.email},{
+                console.log("updated ig id 5")
+                await Insta_accounts.updateOne({email: req.body.email,ig_id_5:req.body.ig_id},{
                     $set:{
                         access_token_5:req.body.access_token,
                     }
                 })
+                res.send({"msg":"Successfully filled insta accounts"})
             }
             else{
-                res.send({"msg":"Trying to connect a sixth account"})
+                res.send({"msg":"Trying to connect to a sixth account upgrade plan"});
             }
         }
-        res.send({"msg":"Successfully filled insta accounts"})
+
     })
 })
 app.post('/space_for_insta_accounts',jsonParser,(req,res)=>{

@@ -18,7 +18,7 @@ var bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const { rmSync } = require('fs');
 var imgModel = require('./models/users');
-const jwtKey = "jwt";
+const jwtKey = "hawkeye_pamsar";
 var jsonParser = bodyParser.json();
 var validator = require("email-validator");
 
@@ -116,7 +116,7 @@ app.post('/update_profile_image',jsonParser,upload.single('image'),(req,res,next
         res.send({"msg":"Profile image updated Successfull"});
     })
 })
-app.post('/update_profile',jsonParser, (req, res, next) => {
+app.post('/update_profile',verifyToken,jsonParser, (req, res, next) => {
     console.log("file name=",req.body.email);
     User.findOne({ email: req.body.email }).then(async (data) => {
                     await User.updateOne({email: req.body.email},{
@@ -385,11 +385,13 @@ app.post('/get_plans',jsonParser,function (req, res) {
     })
 app.post('/get-profile-image',jsonParser,async(req,res)=>{
     User.findOne({email: req.body.email}).then(async (data)=>{
-        if(data.updated_profile_img===""){
-            res.send({"msg":"show default avatar"});
-        }
-        else{
-            res.send({"updated_profile_image":data.updated_profile_img});
+        if(data){
+            if(data.updated_profile_img===""){
+                res.send({"msg":"show default avatar"});
+            }
+            else{
+                res.send({"updated_profile_image":data.updated_profile_img});
+            }
         }
     })
 })
@@ -399,6 +401,28 @@ app.post('/customer_details', jsonParser, async(req, res)=>{
       );
       res.send(customer);
 })
+
+app.get('/logout',verifyToken, jsonParser, function(req,res){
+    console.log("log out from frontend")
+    const bearerHeader = req.headers['authorization'];
+    const bearer = bearerHeader.split(' ');
+    User.findOne({ token: bearer[1]}).then(async (data) => {
+        if(data){
+            console.log("data",data);
+            await User.updateOne({email: data.email},{
+                $set:{
+                    token: ""
+                    
+                }
+            })
+            res.status(200).send({"msg":"Logout Successfull"});
+        }
+        else{
+            res.status(400).send({"error":"No such token found"});
+        }
+    })
+})
+
 app.post('/login', jsonParser, function (req, res) {
     User.findOne({ email: req.body.email }).then((data) => {
         //console.log("data",data.password)
@@ -408,15 +432,20 @@ app.post('/login', jsonParser, function (req, res) {
                 // Comparing the original password to
                 // encrypted password   
                 if (isMatch) {
-                    /*jwt.sign({ data }, jwtKey, { expiresIn: '30000s' }, async (err, token) => {
+                    const user_data = {
+                        email:req.body.email,
+                        password:req.body.password
+                    }
+                    console.log("data",data);
+                    jwt.sign({ user_data }, jwtKey, { expiresIn: '30000s' }, async (err, jwt_token) => {
                         await User.updateOne({email: req.body.email},{
                             $set:{
-                                token : token
+                                token: jwt_token
+                                
                             }
                         })
-                        res.status(200).send({"msg":"Login Successfull","jwt":token});
-                    })*/
-                    res.status(200).send({"msg":"Login Successfull"});
+                        res.status(200).send({"msg":"Login Successfull","jwt":jwt_token});
+                    })
                 }
       
                 if (!isMatch) {
@@ -930,13 +959,14 @@ app.post('/edit_name',jsonParser,async (req,res)=>{
 
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
+    console.log("Bearer Header", bearerHeader);
     if (typeof bearerHeader !== 'undefined') {
         const bearer = bearerHeader.split(' ');
         console.log(bearer[1]);
         req.token = bearer[1];
         jwt.verify(req.token, jwtKey, (err, authData) => {
             if (err) {
-                res.json({ result: err })
+                res.status(401).json({ "error": err })
             }
             else {
                 next();
@@ -944,7 +974,7 @@ function verifyToken(req, res, next) {
         })
     }
     else {
-        res.send({ "result": "Token not provided" });
+        res.status(401).send({ "error": "Token not provided" });
     }
 }
 app.listen(5000, () => {

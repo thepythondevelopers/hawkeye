@@ -1,5 +1,11 @@
 {
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node ./prod-build/main.js",
+    "build": "webpack --config webpack.prod.js --mode development"
+  },
   "dependencies": {
+    "babel-loader": "^9.1.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
@@ -17,6 +23,11 @@
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
     "plaid": "^12.1.0",
-    "stripe": "^11.1.0"
+    "stripe": "^11.1.0",
+    "terser-webpack-plugin": "^5.3.7",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.0.1"
   }
 }

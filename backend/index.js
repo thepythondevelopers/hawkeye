@@ -30,7 +30,7 @@ mongoose.connect(process.env.connecting_string, {
 })
 
 
-app.post('/send_email',jsonParser,(req,res)=>{
+app.post('/send_email',verifyToken,jsonParser,(req,res)=>{
     if(req.body.sub==="purchased"){
         var transporter = nodemailer.createTransport({
             service:'gmail',
@@ -98,22 +98,27 @@ const storage = multer.diskStorage({
 });
   
 var upload = multer({ storage: storage });
-app.post('/user_details',jsonParser,(req,res)=>{
+app.post('/user_details',verifyToken,jsonParser,(req,res)=>{
     User.findOne({email:req.body.email}).then(async (data)=>{
         res.send({"user_details":data})
     })
 })
-app.post('/update_profile_image',jsonParser,upload.single('image'),(req,res,next)=>{
+app.post('/update_profile_image',verifyToken,jsonParser,upload.single('image'),(req,res,next)=>{
     User.findOne({ email: req.body.email }).then(async (data) => {
-        await User.updateOne({email: req.body.email},{
-            $set:{
-                updated_profile_img: {
-                    data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-                    contentType: 'image/png'
-                },
-            }
-        })
-        res.send({"msg":"Profile image updated Successfull"});
+        if(req.file.filename){
+            await User.updateOne({email: req.body.email},{
+                $set:{
+                    updated_profile_img: {
+                        data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+                        contentType: 'image/png'
+                    },
+                }
+            })
+            res.send({"msg":"Profile image updated Successfull"});
+        }
+        else{
+            res.send({"msg":"Profile image not updated"});
+        }
     })
 })
 app.post('/update_profile',verifyToken,jsonParser, (req, res, next) => {
@@ -134,7 +139,7 @@ app.post('/update_profile',verifyToken,jsonParser, (req, res, next) => {
     })
 });
 
-app.post('/create_otp_collection',jsonParser,async(req,res)=>{
+app.post('/create_otp_collection',verifyToken,jsonParser,async(req,res)=>{
     Otp.findOne({ email: req.body.email }).then(async (data) => {
         if(data){
             res.send({"msg":"new otp collection cannot be created because this email already exists in the collection"})
@@ -258,7 +263,7 @@ app.post('/get_otp',jsonParser, async (req,res)=>{
     })
 })
 
-app.post('/create-checkout-session', jsonParser, async (req, res)=> {
+app.post('/create-checkout-session',verifyToken, jsonParser, async (req, res)=> {
     const session = await stripe.checkout.sessions.create({
         success_url: process.env.success_url,
         cancel_url: process.env.cancel_url,
@@ -271,14 +276,14 @@ app.post('/create-checkout-session', jsonParser, async (req, res)=> {
     res.send(session);
 })
 
-app.post('/get_cust_id',jsonParser,async(req,res)=>{
+app.post('/get_cust_id',verifyToken,jsonParser,async(req,res)=>{
     User.findOne({ email: req.body.email }).then(async (data) => {
         console.log("get customer id::",data);
         res.send({"msg":"Subscription cancelled successfully"});
     })
 })
 
-app.post('/save_cust_id',jsonParser,async(req,res)=>{
+app.post('/save_cust_id',verifyToken,jsonParser,async(req,res)=>{
     User.findOne({ email: req.body.email }).then(async (data) => {
         if(data){
             await User.updateOne({email: req.body.email},{
@@ -290,12 +295,12 @@ app.post('/save_cust_id',jsonParser,async(req,res)=>{
     })
 })
 
-app.post('/list_subscription', jsonParser,async(req,res)=>{
+app.post('/list_subscription',verifyToken, jsonParser,async(req,res)=>{
     let stripeSub = await stripe.subscriptions.list({customer: req.body.ci});
     res.send(stripeSub);
 })
 
-app.post('/save_subscription_id',jsonParser,async(req,res)=>{
+app.post('/save_subscription_id',verifyToken,jsonParser,async(req,res)=>{
     await User.updateOne({email: req.body.email},{
         $set:{
             sub_id : req.body.sub_id
@@ -304,18 +309,18 @@ app.post('/save_subscription_id',jsonParser,async(req,res)=>{
     res.send({"msg":"subscription id saved successfully"});
 })
 
-app.get('/payment_lists',async(req,res)=>{
+app.get('/payment_lists',verifyToken,async(req,res)=>{
     const paymentIntents = await stripe.paymentIntents.list({
       });
       res.send(paymentIntents);
 })
-app.post('/customer_details', jsonParser, async(req, res)=>{
+app.post('/customer_details',verifyToken, jsonParser, async(req, res)=>{
     const customer = await stripe.customers.retrieve(
         req.body.customer
       );
       res.send(customer);
 })
-app.post('/save_subscription', jsonParser, async(req, res)=>{
+app.post('/save_subscription',verifyToken, jsonParser, async(req, res)=>{
     let suscribed_plan="Null"
     if(req.body.amount===1900){
     console.log("email",req.body.email);
@@ -337,7 +342,7 @@ app.post('/save_subscription', jsonParser, async(req, res)=>{
     res.send({"suscription":"success"});
 })
 
-app.post('/check_allocation',jsonParser,async(req,res)=>{
+app.post('/check_allocation',verifyToken,jsonParser,async(req,res)=>{
     User.findOne({email:req.body.email}).then(async (data)=>{
         if(data){
             res.send({msg:'allocation present'})
@@ -348,7 +353,7 @@ app.post('/check_allocation',jsonParser,async(req,res)=>{
     })
 })
 
-app.post('/cancel_subscription',jsonParser,async(req,res)=>{
+app.post('/cancel_subscription',verifyToken,jsonParser,async(req,res)=>{
     User.findOne({ email: req.body.email }).then(async (data) => {
         console.log("subscription id::",data.sub_id);
         const deleted = await stripe.subscriptions.del(
@@ -372,7 +377,7 @@ app.post('/cancel_subscription',jsonParser,async(req,res)=>{
     })
 })
 
-app.post('/get_plans',jsonParser,function (req, res) {
+app.post('/get_plans',verifyToken,jsonParser,function (req, res) {
     User.findOne({ email: req.body.email }).then((data) => {
         if(data){
             res.send({"plan":data.plan})
@@ -383,19 +388,22 @@ app.post('/get_plans',jsonParser,function (req, res) {
     })
         
     })
-app.post('/get-profile-image',jsonParser,async(req,res)=>{
+app.post('/get-profile-image',verifyToken,jsonParser,async(req,res)=>{
     User.findOne({email: req.body.email}).then(async (data)=>{
         if(data){
-            if(data.updated_profile_img===""){
-                res.send({"msg":"show default avatar"});
+            if(!data.updated_profile_img.data.data){
+                return res.send(data.updated_profile_img);
             }
             else{
-                res.send({"updated_profile_image":data.updated_profile_img});
+                return res.send({"updated_profile_image":data.updated_profile_img});
             }
+        }
+        else{
+            return res.status(400).json({"msg":"No such user found"});
         }
     })
 })
-app.post('/customer_details', jsonParser, async(req, res)=>{
+app.post('/customer_details', verifyToken,jsonParser, async(req, res)=>{
     const customer = await stripe.customers.retrieve(
         req.body.customer
       );
@@ -494,7 +502,7 @@ app.post('/register', jsonParser, function (req, res) {
                 sub_id:"",
                 cust_id:"",
                 updated_profile_img: {
-                    data: fs.readFileSync(path.join(__dirname + '/uploads/' + "default_avatar.jpg")),
+                    data: "",
                     contentType: 'image/png'
                 },
             })
@@ -511,12 +519,12 @@ app.post('/register', jsonParser, function (req, res) {
         res.send({error:"Invalid email"});
     }
 })
-app.post('/get_insta_accounts',jsonParser,(req,res)=>{
+app.post('/get_insta_accounts',verifyToken,jsonParser,(req,res)=>{
     Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
         res.send({"data from get insta accounts":data});
     })
 })
-app.post('/fill_insta_accounts',jsonParser,(req,res)=>{
+app.post('/fill_insta_accounts',verifyToken,jsonParser,(req,res)=>{
     Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
 
         if(data){
@@ -623,7 +631,7 @@ app.post('/fill_insta_accounts',jsonParser,(req,res)=>{
 
     })
 })
-app.post('/space_for_insta_accounts',jsonParser,(req,res)=>{
+app.post('/space_for_insta_accounts',verifyToken,jsonParser,(req,res)=>{
         Insta_accounts.findOne({email:req.body.email}).then((data1)=>{
             if(data1){
                 res.send({"msg":"Insta Accounts allocation already created"});
@@ -656,7 +664,7 @@ app.post('/space_for_insta_accounts',jsonParser,(req,res)=>{
             }
         })
 })
-app.post('/user_current_plan',jsonParser,(req,res)=>{
+app.post('/user_current_plan',verifyToken,jsonParser,(req,res)=>{
     User.findOne({email:req.body.email}).then(async (data)=>{
         console.log("data=",data);
         res.send({"user_current_plan":data})
@@ -667,7 +675,7 @@ app.get('/users', verifyToken, function (req, res) {
         res.status(200).json(result);
     })
 })
-app.post('/get_following', jsonParser,(req,res)=>{
+app.post('/get_following',verifyToken, jsonParser,(req,res)=>{
     Following.findOne({ user_id: req.body.id }).then(async (data) => {
         if(data){
             res.send(data);
@@ -677,7 +685,7 @@ app.post('/get_following', jsonParser,(req,res)=>{
         }
     })
 });
-app.post('/save_following', jsonParser,async (req,res)=>{
+app.post('/save_following',verifyToken, jsonParser,async (req,res)=>{
     Following.findOne({ user_id: req.body.id }).then(async (data) => {
         console.log("data",data);
         if(!data){
@@ -886,7 +894,7 @@ app.post('/save_following', jsonParser,async (req,res)=>{
         }
     })
 })
-app.post('/save_following_month_p', jsonParser,async (req,res)=>{
+app.post('/save_following_month_p',verifyToken, jsonParser,async (req,res)=>{
     console.log("id",req.body.id);
     Following.findOne({ user_id: req.body.id }).then(async (data) => {
         console.log("data",data);
@@ -904,7 +912,7 @@ app.post('/save_following_month_p', jsonParser,async (req,res)=>{
         }
     })
 })
-app.post('/edit_name',jsonParser,async (req,res)=>{
+app.post('/edit_name',verifyToken,jsonParser,async (req,res)=>{
     if(req.body.edit_for==="account_1"){
         Insta_accounts.findOne({email:req.body.email}).then(async (data)=>{
             await Insta_accounts.updateOne({email: req.body.email},{

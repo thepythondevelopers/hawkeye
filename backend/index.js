@@ -273,7 +273,7 @@ app.post('/create-checkout-session',verifyToken, jsonParser, async (req, res)=> 
         mode: 'subscription',
       });
     console.log("session",session);
-    res.send(session);
+    res.send({"payment_url":session.url});
 })
 
 app.post('/get_cust_id',verifyToken,jsonParser,async(req,res)=>{
